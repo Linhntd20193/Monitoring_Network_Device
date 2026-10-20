@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign In — NOC Assistant</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#signin">Skip to sign in</a>
+<main class="login-wrap" id="signin">
+  <section class="card login-card" aria-labelledby="t">
+    <div class="brand">NOC Assistant <small>GenAI Network Device Monitoring</small></div>
+    <h1 id="t">Sign in</h1>
+    <p class="muted">UC-01 · All data stays inside your environment.</p>
+    <form action="dashboard.html" method="get">
+      <div class="field">
+        <label for="user">Username</label>
+        <input id="user" type="text" autocomplete="username" required value="minh.nguyen">
+      </div>
+      <div class="field">
+        <label for="pw">Password</label>
+        <input id="pw" type="password" autocomplete="current-password" required value="demo-only">
+        <div class="hint">Demo values only. No real credentials are used.</div>
+      </div>
+      <button class="btn primary" type="submit" style="width:100%">Sign in</button>
+    </form>
+    <p class="muted" style="margin-top:16px;font-size:.85rem">Roles: Engineer, Team lead, Admin (REQ-015).</p>
+  </section>
+</main>
+</body>
+</html>

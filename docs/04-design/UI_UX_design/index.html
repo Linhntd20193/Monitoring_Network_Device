@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UI/UX Design — NOC Assistant</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<main class="content" id="main" style="max-width:1100px;margin:0 auto">
+  <header>
+    <h1>UI/UX Design — GenAI Network Device Monitoring Assistant</h1>
+    <p class="muted">Clickable HTML prototype. Source: PRD.md section 6.2, personas P-001 to P-004, use cases UC-01 to UC-20. All data is simulated and nothing leaves the browser. <button class="btn small" id="theme-toggle" type="button">Toggle dark mode</button></p>
+  </header>
+
+  <section class="card" aria-labelledby="pages-h">
+    <h2 id="pages-h">Screens</h2>
+    <div class="table-wrap">
+      <table>
+        <caption class="sr-only">Screens and the use cases they cover</caption>
+        <thead><tr><th scope="col">Screen</th><th scope="col">Use cases</th><th scope="col">Requirements</th><th scope="col">Main persona</th></tr></thead>
+        <tbody>
+          <tr><td><a href="login.html">Sign in</a></td><td>UC-01</td><td>REQ-015, NFR-08</td><td>All</td></tr>
+          <tr><td><a href="dashboard.html">Incident dashboard</a></td><td>UC-02, UC-19, UC-20</td><td>REQ-002, 004, 018</td><td>Minh</td></tr>
+          <tr><td><a href="incident.html">Incident detail with chat</a></td><td>UC-03 to UC-10</td><td>REQ-005 to 010, 013</td><td>Minh, Hoa</td></tr>
+          <tr><td><a href="report.html">Incident report</a></td><td>UC-11, UC-12</td><td>REQ-011, 012</td><td>Hoa</td></tr>
+          <tr><td><a href="results.html">Results</a></td><td>UC-14, UC-15</td><td>REQ-017</td><td>Binh</td></tr>
+          <tr><td><a href="admin.html">Users, rules, audit, suppressed alerts</a></td><td>UC-13, UC-16, UC-17, UC-18</td><td>REQ-003, 015, 016, NFR-13</td><td>Binh, Cuong</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="flow-h">
+    <h2 id="flow-h">Core flow</h2>
+    <ol>
+      <li><a href="login.html">Sign in</a></li>
+      <li><a href="dashboard.html">See ranked incidents</a></li>
+      <li><a href="incident.html">Review causes with evidence, read next action, ask chat</a></li>
+      <li><a href="incident.html">Confirm recovery</a> (dialog) &rarr; <a href="report.html">review and save report</a></li>
+      <li><a href="results.html">Team lead checks results against baselines</a></li>
+    </ol>
+    <p class="muted">Target: a new junior engineer completes steps 2 to 4 within 30 minutes of first use (NFR-10).</p>
+  </section>
+
+  <section class="card" aria-labelledby="pillars-h">
+    <h2 id="pillars-h">UX pillars and how the screens apply them</h2>
+    <ul>
+      <li><strong>Evidence first:</strong> every cause lists the alerts, metrics or log lines behind it (REQ-006, NFR-12).</li>
+      <li><strong>Low noise:</strong> one row per incident; severity shown by colour, symbol and word; filters and search on the list.</li>
+      <li><strong>Local only:</strong> no external fonts, scripts or analytics; the page makes no network calls (REQ-014).</li>
+      <li><strong>Plain language:</strong> next action written as numbered steps; no model jargon.</li>
+      <li><strong>Honest uncertainty:</strong> confidence shown as number and bar, with a "low confidence" label below 50 %.</li>
+    </ul>
+  </section>
+
+  <section class="card" aria-labelledby="states-h">
+    <h2 id="states-h">Edge cases and error states shown</h2>
+    <div class="table-wrap">
+      <table>
+        <caption class="sr-only">Error and empty states</caption>
+        <thead><tr><th scope="col">Case</th><th scope="col">Where to see it</th></tr></thead>
+        <tbody>
+          <tr><td>Data source offline</td><td><a href="dashboard.html">Dashboard</a>, button "Demo: data source offline"</td></tr>
+          <tr><td>No incidents match</td><td><a href="dashboard.html">Dashboard</a>, search for a word that does not exist</td></tr>
+          <tr><td>Language model unavailable</td><td><a href="incident.html">Incident detail</a>, button "Demo: language model unavailable"</td></tr>
+          <tr><td>Low-confidence cause</td><td><a href="incident.html">Incident detail</a>, causes 2 and 3</td></tr>
+          <tr><td>Empty or unrelated chat question</td><td><a href="incident.html">Incident detail</a>, chat panel</td></tr>
+          <tr><td>Closing without confirmation</td><td><a href="incident.html">Incident detail</a>, "Cancel, keep open"</td></tr>
+          <tr><td>Unsaved report text</td><td><a href="report.html">Report</a>, text is kept in the browser while editing</td></tr>
+          <tr><td>Required field missing</td><td><a href="admin.html">Admin</a>, "Add user" with empty name</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="tok-h">
+    <h2 id="tok-h">Design tokens</h2>
+    <h3>Colour (light; dark mode values are in styles.css)</h3>
+    <div class="swatches">
+      <div class="swatch"><i style="background:#f4f6f9"></i>--bg #f4f6f9</div>
+      <div class="swatch"><i style="background:#ffffff"></i>--surface #ffffff</div>
+      <div class="swatch"><i style="background:#1257c4"></i>--primary #1257c4</div>
+      <div class="swatch"><i style="background:#b3261e"></i>--critical #b3261e</div>
+      <div class="swatch"><i style="background:#fde7c8"></i>--major #fde7c8</div>
+      <div class="swatch"><i style="background:#e3edfd"></i>--minor #e3edfd</div>
+      <div class="swatch"><i style="background:#dff3e4"></i>--ok #dff3e4</div>
+      <div class="swatch"><i style="background:#1a2330"></i>--text #1a2330</div>
+    </div>
+    <h3 style="margin-top:16px">Type, spacing, shape</h3>
+    <ul>
+      <li>Font: Segoe UI / system sans; mono for log lines. Base 16 px; h1 24 px, h2 18 px.</li>
+      <li>Spacing scale: 4, 8, 12, 16, 24, 32 px. Minimum touch target 40 px.</li>
+      <li>Radius: 4, 8, 12 px. Motion: 150 ms, disabled when the user prefers reduced motion.</li>
+    </ul>
+  </section>
+
+  <section class="card" aria-labelledby="a11y-h">
+    <h2 id="a11y-h">Accessibility and responsiveness (NFR-11)</h2>
+    <ul>
+      <li>Skip link, landmarks, one h1 per page, table captions and column scopes.</li>
+      <li>Keyboard access for every control; visible 3 px focus ring; dialog traps focus.</li>
+      <li>Status never shown by colour alone (symbol and text on severity and result badges).</li>
+      <li>Live regions for chat, toasts and banners.</li>
+      <li>Text, link, button and badge colour pairs were calculated at 6.5:1 or higher in light and dark themes (minimum 4.5:1 required). Borders and the confidence bar were not measured.</li>
+      <li>Layout adapts from 320 px to wide screens: sidebar becomes a top bar below 900 px.</li>
+    </ul>
+  </section>
+</main>
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>

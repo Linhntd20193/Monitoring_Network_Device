@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Incident Dashboard — NOC Assistant</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">NOC Assistant <small>GenAI Network Device Monitoring</small></div>
+    <nav aria-label="Main">
+      <ul class="nav">
+        <li><a href="dashboard.html" aria-current="page">Incidents</a></li>
+        <li><a href="incident.html">Incident detail</a></li>
+        <li><a href="report.html">Report</a></li>
+        <li class="nav-label" role="presentation">Team lead</li>
+        <li><a href="results.html">Results</a></li>
+        <li class="nav-label" role="presentation">Admin</li>
+        <li><a href="admin.html">Users, rules, audit</a></li>
+      </ul>
+    </nav>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <div class="who"><span class="badge neutral">Role: Engineer</span><span>Minh Nguyen</span></div>
+      <div>
+        <button class="btn small" id="theme-toggle" type="button">Toggle dark mode</button>
+        <a class="btn small" href="login.html">Sign out</a>
+      </div>
+    </header>
+    <main class="content" id="main">
+      <div>
+        <h1>Open incidents</h1>
+        <p class="muted">UC-02 · Sorted by severity, then age. Related alerts are grouped into one incident (REQ-002).</p>
+      </div>
+
+      <div id="offline-banner" class="banner warn" role="status" hidden>
+        <span><strong>Data source offline.</strong> Last update 09:52. Showing last known incidents.</span>
+      </div>
+
+      <section class="grid-4" aria-label="Summary">
+        <div class="card kpi"><div class="value">6</div><div class="label">Open incidents</div></div>
+        <div class="card kpi"><div class="value">142</div><div class="label">Alerts grouped today</div></div>
+        <div class="card kpi"><div class="value">1</div><div class="label">Critical over 45 minutes</div></div>
+        <div class="card kpi"><div class="value">1,200</div><div class="label">Devices monitored</div></div>
+      </section>
+
+      <section class="card" aria-labelledby="list-h">
+        <h2 id="list-h">Incident list <span class="muted" style="font-weight:400">(showing <span id="shown-count">6</span>)</span></h2>
+        <div class="toolbar">
+          <div>
+            <label for="sev-filter">Severity</label>
+            <select id="sev-filter">
+              <option value="all">All</option>
+              <option value="critical">Critical</option>
+              <option value="major">Major</option>
+              <option value="minor">Minor</option>
+            </select>
+          </div>
+          <div style="flex:1;min-width:200px">
+            <label for="inc-search">Search device or site</label>
+            <input id="inc-search" type="search" placeholder="e.g. core-sw-07 or Site 3">
+          </div>
+          <button class="btn small" id="offline-demo" type="button">Demo: data source offline</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <caption class="sr-only">Open incidents ordered by severity</caption>
+            <thead>
+              <tr><th scope="col">Severity</th><th scope="col">Incident</th><th scope="col">Affected devices</th><th scope="col">Alerts</th><th scope="col">Age</th><th scope="col">Top probable cause</th></tr>
+            </thead>
+            <tbody id="incident-rows">
+              <tr data-sev="critical"><td><span class="badge critical">▲ Critical</span></td><td><a href="incident.html">INC-1042</a></td><td>core-sw-07 +3 · Site 3</td><td>20</td><td>52 min</td><td>Link failure Gi0/1 <span class="muted">(87 %)</span></td></tr>
+              <tr data-sev="major"><td><span class="badge major">■ Major</span></td><td><a href="incident.html">INC-1041</a></td><td>edge-rt-12 · Site 7</td><td>9</td><td>31 min</td><td>Routing flap (OSPF) <span class="muted">(74 %)</span></td></tr>
+              <tr data-sev="major"><td><span class="badge major">■ Major</span></td><td><a href="incident.html">INC-1039</a></td><td>fw-edge-02 · Site 1</td><td>6</td><td>1 h 12 min</td><td>Device overload (CPU) <span class="muted">(69 %)</span></td></tr>
+              <tr data-sev="minor"><td><span class="badge minor">● Minor</span></td><td><a href="incident.html">INC-1044</a></td><td>acc-sw-31 · Site 9</td><td>3</td><td>12 min</td><td>Configuration error <span class="muted">(58 %, low confidence)</span></td></tr>
+              <tr data-sev="minor"><td><span class="badge minor">● Minor</span></td><td><a href="incident.html">INC-1040</a></td><td>dist-sw-05 · Site 2</td><td>2</td><td>44 min</td><td>Hardware fault (fan) <span class="muted">(63 %)</span></td></tr>
+              <tr data-sev="minor"><td><span class="badge minor">● Minor</span></td><td><a href="incident.html">INC-1043</a></td><td>acc-sw-18 · Site 5</td><td>2</td><td>20 min</td><td>Link failure Fa0/12 <span class="muted">(61 %)</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="empty-state" class="empty" hidden>No open incidents match your filters.</div>
+        <p class="muted" style="margin-top:12px;font-size:.85rem">Severity is shown as colour, symbol and text. Suppressed alerts stay retrievable for 30 days (<a href="admin.html">UC-13 in audit &amp; search</a>).</p>
+      </section>
+    </main>
+  </div>
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="uc" name="Use Case Diagram">
+    <mxGraphModel dx="1704" dy="905" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="boundary" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;verticalAlign=top;align=left;spacingLeft=12;fontStyle=1;fontSize=14;strokeWidth=2;" value="GenAI Network Device Monitoring Assistant" vertex="1">
+          <mxGeometry height="880" width="760" x="200" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="UC01" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#666666;fontSize=11;" value="UC-01&lt;br&gt;Sign In" vertex="1">
+          <mxGeometry height="58" width="200" x="230" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="UC02" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#666666;fontSize=11;" value="UC-02&lt;br&gt;View Incident Dashboard" vertex="1">
+          <mxGeometry height="58" width="200" x="230" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="UC09" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#666666;fontSize=11;" value="UC-09&lt;br&gt;Escalate Critical Incident" vertex="1">
+          <mxGeometry height="58" width="200" x="230" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="UC03" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#666666;fontSize=11;" value="UC-03&lt;br&gt;Review Incident Detail" vertex="1">
+          <mxGeometry height="58" width="200" x="230" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="UC08" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#666666;fontSize=11;" value="UC-08&lt;br&gt;Ask Incident Chat" vertex="1">
+          <mxGeometry height="58" width="200" x="230" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="UC10" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#666666;fontSize=11;" value="UC-10&lt;br&gt;Confirm Recovery and Close Incident" vertex="1">
+          <mxGeometry height="58" width="200" x="230" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="UC12" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#666666;fontSize=11;" value="UC-12&lt;br&gt;Edit and Save Report" vertex="1">
+          <mxGeometry height="58" width="200" x="230" y="609" as="geometry" />
+        </mxCell>
+        <mxCell id="UC13" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#666666;fontSize=11;" value="UC-13&lt;br&gt;Retrieve Suppressed Alert" vertex="1">
+          <mxGeometry height="58" width="200" x="230" y="712" as="geometry" />
+        </mxCell>
+        <mxCell id="UC05" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#666666;fontSize=11;" value="UC-05&lt;br&gt;Give Cause Feedback" vertex="1">
+          <mxGeometry height="58" width="200" x="470" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="UC04" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#666666;fontSize=11;" value="UC-04&lt;br&gt;View Ranked Causes" vertex="1">
+          <mxGeometry height="58" width="200" x="470" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="UC06" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#666666;fontSize=11;" value="UC-06&lt;br&gt;View Recommended Action" vertex="1">
+          <mxGeometry height="58" width="200" x="470" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="UC11" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#666666;fontSize=11;" value="UC-11&lt;br&gt;Draft Incident Report" vertex="1">
+          <mxGeometry height="58" width="200" x="470" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="UC07" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#666666;fontSize=11;" value="UC-07&lt;br&gt;Analyse with Language Model" vertex="1">
+          <mxGeometry height="58" width="200" x="470" y="580" as="geometry" />
+        </mxCell>
+        <mxCell id="UC14" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#666666;fontSize=11;" value="UC-14&lt;br&gt;View Results Report" vertex="1">
+          <mxGeometry height="58" width="200" x="730" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="UC15" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#666666;fontSize=11;" value="UC-15&lt;br&gt;Export Results Report" vertex="1">
+          <mxGeometry height="58" width="200" x="730" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="UC16" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#666666;fontSize=11;" value="UC-16&lt;br&gt;View Audit Log" vertex="1">
+          <mxGeometry height="58" width="200" x="730" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="UC17" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#666666;fontSize=11;" value="UC-17&lt;br&gt;Manage Users and Roles" vertex="1">
+          <mxGeometry height="58" width="200" x="730" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="UC18" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#666666;fontSize=11;" value="UC-18&lt;br&gt;Configure Rules" vertex="1">
+          <mxGeometry height="58" width="200" x="730" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="UC19" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#666666;fontSize=11;" value="UC-19&lt;br&gt;Ingest Monitoring Data" vertex="1">
+          <mxGeometry height="58" width="200" x="730" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="UC20" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#666666;fontSize=11;" value="UC-20&lt;br&gt;Correlate Alerts into Incidents" vertex="1">
+          <mxGeometry height="58" width="200" x="730" y="770" as="geometry" />
+        </mxCell>
+        <mxCell id="actEng" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontStyle=1;" value="NOC Engineer" vertex="1">
+          <mxGeometry height="64" width="34" x="70" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="actLead" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontStyle=1;" value="Team Lead" vertex="1">
+          <mxGeometry height="64" width="34" x="1040" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="actAdm" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontStyle=1;" value="Admin" vertex="1">
+          <mxGeometry height="64" width="34" x="1040" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="actLlm" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontStyle=1;" value="Local Language Model&lt;br&gt;(secondary)" vertex="1">
+          <mxGeometry height="64" width="34" x="1040" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="actMon" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontStyle=1;" value="Existing Monitoring System&lt;br&gt;(secondary)" vertex="1">
+          <mxGeometry height="64" width="34" x="1040" y="690" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="actEng" style="endArrow=none;html=1;rounded=0;" target="UC01" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="1" source="actEng" style="endArrow=none;html=1;rounded=0;" target="UC02" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" edge="1" parent="1" source="actEng" style="endArrow=none;html=1;rounded=0;" target="UC03" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e13" edge="1" parent="1" source="actEng" style="endArrow=none;html=1;rounded=0;" target="UC08" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e14" edge="1" parent="1" source="actEng" style="endArrow=none;html=1;rounded=0;" target="UC10" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e15" edge="1" parent="1" source="actEng" style="endArrow=none;html=1;rounded=0;" target="UC12" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e16" edge="1" parent="1" source="actEng" style="endArrow=none;html=1;rounded=0;" target="UC13" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="180" y="670" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e17" edge="1" parent="1" source="actLead" style="endArrow=none;html=1;rounded=0;" target="UC14" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e18" edge="1" parent="1" source="actLead" style="endArrow=none;html=1;rounded=0;" target="UC15" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e19" edge="1" parent="1" source="actLead" style="endArrow=none;html=1;rounded=0;" target="UC16" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e20" edge="1" parent="1" source="actAdm" style="endArrow=none;html=1;rounded=0;" target="UC16" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e21" edge="1" parent="1" source="actAdm" style="endArrow=none;html=1;rounded=0;" target="UC17" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e22" edge="1" parent="1" source="actAdm" style="endArrow=none;html=1;rounded=0;" target="UC18" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e23" edge="1" parent="1" source="actLlm" style="endArrow=none;html=1;rounded=0;" target="UC07" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e24" edge="1" parent="1" source="actMon" style="endArrow=none;html=1;rounded=0;" target="UC19" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e25" edge="1" parent="1" source="UC03" style="dashed=1;html=1;endArrow=open;endSize=8;fontSize=10;rounded=0;" target="UC04" value="«include»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e26" edge="1" parent="1" source="UC03" style="dashed=1;html=1;endArrow=open;endSize=8;fontSize=10;rounded=0;" target="UC06" value="«include»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e27" edge="1" parent="1" source="UC04" style="edgeStyle=orthogonalEdgeStyle;dashed=1;html=1;endArrow=open;endSize=8;fontSize=10;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" target="UC07" value="«include»">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="700" y="199" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e28" edge="1" parent="1" source="UC06" style="edgeStyle=orthogonalEdgeStyle;dashed=1;html=1;endArrow=open;endSize=8;fontSize=10;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" target="UC07" value="«include»">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="700" y="289" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e29" edge="1" parent="1" source="UC08" style="dashed=1;html=1;endArrow=open;endSize=8;fontSize=10;rounded=0;" target="UC07" value="«include»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e30" edge="1" parent="1" source="UC11" style="dashed=1;html=1;endArrow=open;endSize=8;fontSize=10;rounded=0;" target="UC07" value="«include»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e31" edge="1" parent="1" source="UC10" style="dashed=1;html=1;endArrow=open;endSize=8;fontSize=10;rounded=0;" target="UC11" value="«include»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e32" edge="1" parent="1" source="UC05" style="dashed=1;html=1;endArrow=open;endSize=8;fontSize=10;rounded=0;" target="UC04" value="«extend»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e33" edge="1" parent="1" source="UC09" style="dashed=1;html=1;endArrow=open;endSize=8;fontSize=10;rounded=0;" target="UC03" value="«extend»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e34" edge="1" parent="1" source="UC08" style="dashed=1;html=1;endArrow=open;endSize=8;fontSize=10;rounded=0;" target="UC03" value="«extend»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e35" edge="1" parent="1" source="UC12" style="dashed=1;html=1;endArrow=open;endSize=8;fontSize=10;rounded=0;" target="UC10" value="«extend»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e36" edge="1" parent="1" source="UC15" style="dashed=1;html=1;endArrow=open;endSize=8;fontSize=10;rounded=0;" target="UC14" value="«extend»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e37" edge="1" parent="1" source="UC19" style="dashed=1;html=1;endArrow=open;endSize=8;fontSize=10;rounded=0;" target="UC20" value="«include»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n1" parent="1" style="shape=note;whiteSpace=wrap;html=1;align=left;spacing=8;fontSize=10;fillColor=#FFF2CC;strokeColor=#d6b656;" value="Notes:&lt;br&gt;1. All human actors authenticate through UC-01 (REQ-015, NFR-08).&lt;br&gt;2. UC-09 is triggered by the system when a Critical incident is open for 60 minutes (BRU-002) and extends UC-03.&lt;br&gt;3. UC-04 to UC-07 are reached by the Engineer through UC-03 (include/extend).&lt;br&gt;4. Team Lead may also perform Engineer use cases [Assumed]." vertex="1">
+          <mxGeometry height="230" width="170" x="20" y="760" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" parent="1" style="text;html=1;fontSize=10;" value="Blue = user-facing · Orange = lead/admin · Green = system/AI" vertex="1">
+          <mxGeometry height="20" width="420" x="200" y="905" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

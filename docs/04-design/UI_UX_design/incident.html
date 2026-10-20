@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Incident Detail — NOC Assistant</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">NOC Assistant <small>GenAI Network Device Monitoring</small></div>
+    <nav aria-label="Main">
+      <ul class="nav">
+        <li><a href="dashboard.html">Incidents</a></li>
+        <li><a href="incident.html" aria-current="page">Incident detail</a></li>
+        <li><a href="report.html">Report</a></li>
+        <li class="nav-label" role="presentation">Team lead</li>
+        <li><a href="results.html">Results</a></li>
+        <li class="nav-label" role="presentation">Admin</li>
+        <li><a href="admin.html">Users, rules, audit</a></li>
+      </ul>
+    </nav>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <div class="who"><span class="badge neutral">Role: Engineer</span><span>Minh Nguyen</span></div>
+      <div>
+        <button class="btn small" id="theme-toggle" type="button">Toggle dark mode</button>
+        <a class="btn small" href="login.html">Sign out</a>
+      </div>
+    </header>
+    <main class="content" id="main">
+      <div>
+        <p><a href="dashboard.html">&larr; Back to incidents</a></p>
+        <h1>INC-1042 · Link failure on core-sw-07 <span class="badge critical">▲ Critical</span> <span class="badge neutral" id="status-badge">Open</span></h1>
+        <p class="muted">UC-03 · Site 3 · Opened 09:41 · Open for 52 minutes · 20 grouped alerts</p>
+      </div>
+
+      <div id="escalation-banner" class="banner danger" role="alert">
+        <span><strong>Critical incident open for over 45 minutes.</strong> Escalate to an expert at 60 minutes (BRU-002).</span>
+        <span>
+          <button class="btn small danger" id="escalate-btn" type="button">Escalate to expert</button>
+          <button class="btn small" id="escalate-later" type="button">Remind me later</button>
+        </span>
+      </div>
+
+      <div class="split">
+        <div style="display:grid;gap:16px">
+          <section class="card" aria-labelledby="causes-h">
+            <h2 id="causes-h">Probable causes <span class="muted" style="font-weight:400">(UC-04)</span></h2>
+            <div class="muted" style="font-size:.85rem;margin-bottom:12px">
+              <button class="btn small" id="llm-demo" type="button">Demo: language model unavailable</button>
+            </div>
+
+            <div id="llm-down" class="banner warn" role="status" hidden>
+              <span><strong>Suggestions unavailable.</strong> The alert list is still shown below.</span>
+            </div>
+
+            <div id="llm-ok">
+              <article class="cause">
+                <div class="head">
+                  <div><span class="rank">1</span><strong>Link failure on core-sw-07 Gi0/1</strong></div>
+                  <div>Confidence 87 % <span class="meter" role="img" aria-label="Confidence 87 percent"><span style="width:87%"></span></span></div>
+                </div>
+                <ul class="evidence">
+                  <li>Syslog 09:41:12 <code>%LINK-3-UPDOWN: Gi0/1 changed state to down</code></li>
+                  <li>Metric <code>ifOperStatus = down</code> since 09:41</li>
+                  <li>19 downstream alerts within 2 minutes (e.g. alert A-20431)</li>
+                </ul>
+                <div style="margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                  <button class="btn small" type="button" data-feedback="correct" aria-pressed="false">Mark correct</button>
+                  <button class="btn small" type="button" data-feedback="incorrect" aria-pressed="false">Mark incorrect</button>
+                  <span class="fb-status muted" aria-live="polite"></span>
+                </div>
+              </article>
+              <article class="cause">
+                <div class="head">
+                  <div><span class="rank">2</span><strong>Hardware fault on the Gi0/1 transceiver</strong></div>
+                  <div>Confidence 41 % <span class="meter" role="img" aria-label="Confidence 41 percent"><span style="width:41%"></span></span> <span class="badge warn">low confidence</span></div>
+                </div>
+                <ul class="evidence">
+                  <li>Two CRC error spikes on Gi0/1 at 09:32 and 09:38</li>
+                </ul>
+              </article>
+              <article class="cause">
+                <div class="head">
+                  <div><span class="rank">3</span><strong>Configuration change on the peer device</strong></div>
+                  <div>Confidence 22 % <span class="meter" role="img" aria-label="Confidence 22 percent"><span style="width:22%"></span></span> <span class="badge warn">low confidence</span></div>
+                </div>
+                <ul class="evidence">
+                  <li>Config change logged on dist-sw-02 at 09:36</li>
+                </ul>
+              </article>
+            </div>
+          </section>
+
+          <section class="card" aria-labelledby="act-h">
+            <h2 id="act-h">Recommended next action <span class="muted" style="font-weight:400">(UC-06)</span></h2>
+            <ol>
+              <li>Check the cable and transceiver on core-sw-07 Gi0/1.</li>
+              <li>If the port stays down, move traffic to the standby link and replace the transceiver.</li>
+              <li>When traffic is restored, confirm recovery below.</li>
+            </ol>
+          </section>
+
+          <section class="card" aria-labelledby="al-h">
+            <h2 id="al-h">Grouped alerts <span class="muted" style="font-weight:400">(20)</span></h2>
+            <div class="table-wrap">
+              <table>
+                <caption class="sr-only">Alerts grouped into INC-1042</caption>
+                <thead><tr><th scope="col">Time</th><th scope="col">Device</th><th scope="col">Message</th></tr></thead>
+                <tbody>
+                  <tr><td class="mono">09:41:12</td><td>core-sw-07</td><td>Interface Gi0/1 down</td></tr>
+                  <tr><td class="mono">09:41:20</td><td>dist-sw-02</td><td>BGP neighbour 10.3.0.7 lost</td></tr>
+                  <tr><td class="mono">09:41:31</td><td>acc-sw-33</td><td>Uplink unreachable</td></tr>
+                  <tr><td colspan="3" class="muted">… 17 more alerts · retrievable for 30 days</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+        <aside style="display:grid;gap:16px">
+          <section class="card chat" aria-labelledby="chat-h">
+            <h2 id="chat-h">Ask about this incident <span class="muted" style="font-weight:400">(UC-08)</span></h2>
+            <div class="chat-log" id="chat-log" role="log" aria-live="polite">
+              <div class="msg bot">Hello, I can answer questions about INC-1042 and cite the evidence.</div>
+            </div>
+            <form id="chat-form" novalidate>
+              <label for="chat-input">Your question</label>
+              <input id="chat-input" type="text" placeholder="Why did this happen?" autocomplete="off">
+              <div class="field"><div class="error" id="chat-error" hidden>Please type a question first.</div></div>
+              <button class="btn primary" type="submit">Send</button>
+            </form>
+          </section>
+
+          <section class="card" aria-labelledby="close-h">
+            <h2 id="close-h">Close incident <span class="muted" style="font-weight:400">(UC-10)</span></h2>
+            <p class="muted">An incident closes only after you confirm that service is restored (BRU-003).</p>
+            <button class="btn primary" id="open-close" type="button">Confirm recovery</button>
+          </section>
+        </aside>
+      </div>
+    </main>
+  </div>
+</div>
+
+<dialog id="close-dialog" aria-labelledby="dlg-h">
+  <h2 id="dlg-h">Confirm service is restored?</h2>
+  <p>INC-1042 will be closed and a report will be drafted for you to review.</p>
+  <div class="actions">
+    <button class="btn" id="close-cancel" type="button">Cancel, keep open</button>
+    <button class="btn primary" id="close-confirm" type="button">Yes, close incident</button>
+  </div>
+</dialog>
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Users, Rules and Audit — NOC Assistant</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">NOC Assistant <small>GenAI Network Device Monitoring</small></div>
+    <nav aria-label="Main">
+      <ul class="nav">
+        <li><a href="dashboard.html">Incidents</a></li>
+        <li><a href="incident.html">Incident detail</a></li>
+        <li><a href="report.html">Report</a></li>
+        <li class="nav-label" role="presentation">Team lead</li>
+        <li><a href="results.html">Results</a></li>
+        <li class="nav-label" role="presentation">Admin</li>
+        <li><a href="admin.html" aria-current="page">Users, rules, audit</a></li>
+      </ul>
+    </nav>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <div class="who"><span class="badge neutral">Role: Admin</span><span>Pham Quoc Cuong</span></div>
+      <div>
+        <button class="btn small" id="theme-toggle" type="button">Toggle dark mode</button>
+        <a class="btn small" href="login.html">Sign out</a>
+      </div>
+    </header>
+    <main class="content" id="main">
+      <div>
+        <h1>Administration</h1>
+        <p class="muted">UC-13, UC-16, UC-17, UC-18 · Rules apply without code changes (NFR-13).</p>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Administration sections">
+        <button role="tab" id="tab-users" aria-selected="true" aria-controls="panel-users" type="button">Users and roles</button>
+        <button role="tab" id="tab-rules" aria-selected="false" aria-controls="panel-rules" type="button">Rules</button>
+        <button role="tab" id="tab-audit" aria-selected="false" aria-controls="panel-audit" type="button">Audit log</button>
+        <button role="tab" id="tab-alerts" aria-selected="false" aria-controls="panel-alerts" type="button">Suppressed alerts</button>
+      </div>
+
+      <section class="card tabpanel" id="panel-users" role="tabpanel" aria-labelledby="tab-users">
+        <h2>Users and roles (UC-17)</h2>
+        <div class="table-wrap">
+          <table>
+            <caption class="sr-only">Users and their roles</caption>
+            <thead><tr><th scope="col">Name</th><th scope="col">Role</th><th scope="col">Status</th></tr></thead>
+            <tbody id="user-rows">
+              <tr><td>Minh Nguyen</td><td>Engineer</td><td><span class="badge ok">Active</span></td></tr>
+              <tr><td>Hoa Tran</td><td>Engineer</td><td><span class="badge ok">Active</span></td></tr>
+              <tr><td>Le Thi Binh</td><td>Team lead</td><td><span class="badge ok">Active</span></td></tr>
+              <tr><td>Pham Quoc Cuong</td><td>Admin</td><td><span class="badge ok">Active</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <form id="user-form" class="toolbar" style="margin-top:16px" novalidate>
+          <div><label for="new-name">Name</label><input id="new-name" type="text"><div class="error field" id="new-name-error" hidden style="margin:4px 0 0">Name is required.</div></div>
+          <div><label for="new-role">Role</label><select id="new-role"><option>Engineer</option><option>Team lead</option><option>Admin</option></select></div>
+          <button class="btn primary" type="submit">Add user</button>
+        </form>
+      </section>
+
+      <section class="card tabpanel" id="panel-rules" role="tabpanel" aria-labelledby="tab-rules" hidden>
+        <h2>Rules (UC-18)</h2>
+        <div class="grid-2">
+          <div>
+            <h3>Severity rules (BRU-001)</h3>
+            <div class="field"><label for="r-crit">Critical</label><input id="r-crit" type="text" value="Service affected for a whole site"></div>
+            <div class="field"><label for="r-major">Major</label><input id="r-major" type="text" value="One device affected and redundancy lost"></div>
+            <div class="field"><label for="r-minor">Minor</label><input id="r-minor" type="text" value="All other incidents"></div>
+          </div>
+          <div>
+            <h3>Time settings</h3>
+            <div class="field"><label for="r-esc">Escalate Critical incidents after (minutes)</label><input id="r-esc" type="number" value="60" min="1"><div class="hint">BRU-002. Default 60.</div></div>
+            <div class="field"><label for="r-ret">Keep suppressed alerts for (days)</label><input id="r-ret" type="number" value="30" min="1"><div class="hint">BR-003. Default 30.</div></div>
+            <button class="btn primary" type="button">Save rules</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card tabpanel" id="panel-audit" role="tabpanel" aria-labelledby="tab-audit" hidden>
+        <h2>Audit log (UC-16)</h2>
+        <div class="table-wrap">
+          <table>
+            <caption class="sr-only">Audit log entries</caption>
+            <thead><tr><th scope="col">Time</th><th scope="col">User</th><th scope="col">Action</th><th scope="col">Detail</th></tr></thead>
+            <tbody>
+              <tr><td class="mono">10:55:08</td><td>Minh Nguyen</td><td>Incident closed</td><td>INC-1042 recovery confirmed</td></tr>
+              <tr><td class="mono">10:12:44</td><td>Minh Nguyen</td><td>Cause feedback</td><td>INC-1042 cause 1 marked correct</td></tr>
+              <tr><td class="mono">09:49:20</td><td>System</td><td>Suggestion shown</td><td>INC-1042 three causes, top confidence 87 %</td></tr>
+              <tr><td class="mono">09:12:03</td><td>Le Thi Binh</td><td>Rule changed</td><td>Escalation time 60 minutes (unchanged)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card tabpanel" id="panel-alerts" role="tabpanel" aria-labelledby="tab-alerts" hidden>
+        <h2>Suppressed alerts (UC-13)</h2>
+        <div class="toolbar">
+          <div><label for="s-dev">Device</label><input id="s-dev" type="search" placeholder="e.g. acc-sw-33"></div>
+          <div><label for="s-days">Within the last</label><select id="s-days"><option>7 days</option><option selected>30 days</option></select></div>
+          <button class="btn primary" type="button">Search</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <caption class="sr-only">Suppressed or grouped alerts</caption>
+            <thead><tr><th scope="col">Time</th><th scope="col">Device</th><th scope="col">Message</th><th scope="col">Grouped into</th></tr></thead>
+            <tbody>
+              <tr><td class="mono">09:41:31</td><td>acc-sw-33</td><td>Uplink unreachable</td><td>INC-1042</td></tr>
+              <tr><td class="mono">08:02:10</td><td>acc-sw-18</td><td>High interface error rate</td><td>No incident (noise)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>

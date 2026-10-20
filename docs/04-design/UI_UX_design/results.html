@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Results — NOC Assistant</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">NOC Assistant <small>GenAI Network Device Monitoring</small></div>
+    <nav aria-label="Main">
+      <ul class="nav">
+        <li><a href="dashboard.html">Incidents</a></li>
+        <li><a href="incident.html">Incident detail</a></li>
+        <li><a href="report.html">Report</a></li>
+        <li class="nav-label" role="presentation">Team lead</li>
+        <li><a href="results.html" aria-current="page">Results</a></li>
+        <li class="nav-label" role="presentation">Admin</li>
+        <li><a href="admin.html">Users, rules, audit</a></li>
+      </ul>
+    </nav>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <div class="who"><span class="badge neutral">Role: Team lead</span><span>Le Thi Binh</span></div>
+      <div>
+        <button class="btn small" id="theme-toggle" type="button">Toggle dark mode</button>
+        <a class="btn small" href="login.html">Sign out</a>
+      </div>
+    </header>
+    <main class="content" id="main">
+      <div>
+        <h1>Results against baselines</h1>
+        <p class="muted">UC-14 and UC-15 · MET-001 to MET-004 · Simulated 30-day dataset (1,200 devices, 50 seeded incidents). All values below are sample data.</p>
+      </div>
+
+      <section class="grid-4" aria-label="Headline results">
+        <div class="card kpi"><div class="value">300</div><div class="label">MET-001 actionable alerts / engineer / day (baseline 800)</div></div>
+        <div class="card kpi"><div class="value">41 min</div><div class="label">MET-002 time to identify cause (baseline 90)</div></div>
+        <div class="card kpi"><div class="value">58 %</div><div class="label">MET-003 resolved without escalation (baseline 30 %)</div></div>
+        <div class="card kpi"><div class="value">11 min</div><div class="label">MET-004 time per report (baseline 40)</div></div>
+      </section>
+
+      <section class="card" aria-labelledby="m-h">
+        <div class="toolbar" style="justify-content:space-between;align-items:center">
+          <h2 id="m-h" style="margin:0">Metric table</h2>
+          <button class="btn primary small" id="export-btn" type="button">Export report (Markdown)</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <caption class="sr-only">Metrics, baseline, target, measured value and result</caption>
+            <thead><tr><th scope="col">Metric</th><th scope="col">Baseline</th><th scope="col">Target</th><th scope="col">Measured</th><th scope="col">Result</th></tr></thead>
+            <tbody id="metric-rows">
+              <tr><td>MET-001 Actionable alerts per engineer per day</td><td>800</td><td>≤ 320</td><td>300</td><td><span class="badge ok">✔ Pass</span></td></tr>
+              <tr><td>MET-002 Time to identify root cause</td><td>90 min</td><td>≤ 45 min</td><td>41 min</td><td><span class="badge ok">✔ Pass</span></td></tr>
+              <tr><td>MET-003 Common incidents resolved without escalation</td><td>30 %</td><td>≥ 60 %</td><td>58 %</td><td><span class="badge warn">✖ Not met</span></td></tr>
+              <tr><td>MET-004 Time per incident report</td><td>40 min</td><td>≤ 12 min</td><td>11 min</td><td><span class="badge ok">✔ Pass</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="muted" style="margin-top:12px;font-size:.85rem">Also checked: grouping accuracy 92 % (target ≥ 90 %), true cause in top 3 for 41 of 50 seeded incidents = 82 % (target ≥ 80 %).</p>
+      </section>
+    </main>
+  </div>
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>

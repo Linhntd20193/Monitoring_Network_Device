@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Incident Report — NOC Assistant</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">NOC Assistant <small>GenAI Network Device Monitoring</small></div>
+    <nav aria-label="Main">
+      <ul class="nav">
+        <li><a href="dashboard.html">Incidents</a></li>
+        <li><a href="incident.html">Incident detail</a></li>
+        <li><a href="report.html" aria-current="page">Report</a></li>
+        <li class="nav-label" role="presentation">Team lead</li>
+        <li><a href="results.html">Results</a></li>
+        <li class="nav-label" role="presentation">Admin</li>
+        <li><a href="admin.html">Users, rules, audit</a></li>
+      </ul>
+    </nav>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <div class="who"><span class="badge neutral">Role: Engineer</span><span>Minh Nguyen</span></div>
+      <div>
+        <button class="btn small" id="theme-toggle" type="button">Toggle dark mode</button>
+        <a class="btn small" href="login.html">Sign out</a>
+      </div>
+    </header>
+    <main class="content" id="main">
+      <div>
+        <h1>Report for INC-1042 <span class="badge warn" id="rep-status">Draft</span></h1>
+        <p class="muted">UC-11 and UC-12 · Drafted automatically from the incident record. Review, edit and save.</p>
+      </div>
+      <div class="split">
+        <form class="card" id="report-form">
+          <div class="field">
+            <label for="rep-title">Title</label>
+            <input id="rep-title" type="text" value="Link failure on core-sw-07 Gi0/1, Site 3">
+          </div>
+          <div class="field">
+            <label for="rep-cause">Root cause</label>
+            <textarea id="rep-cause">The transceiver on core-sw-07 Gi0/1 failed at 09:41, taking down 19 downstream devices. Evidence: syslog LINK-3-UPDOWN, ifOperStatus down, CRC error spikes at 09:32 and 09:38.</textarea>
+          </div>
+          <div class="field">
+            <label for="rep-actions">Actions taken</label>
+            <textarea id="rep-actions">Traffic moved to the standby link at 10:20. Transceiver replaced at 10:44. Link verified stable for 10 minutes.</textarea>
+            <div class="hint">Unsaved text is kept in this browser if the connection is lost.</div>
+          </div>
+          <div class="actions" style="justify-content:flex-start">
+            <button class="btn primary" type="submit">Save report</button>
+            <button class="btn" type="button" onclick="window.print()">Print / export</button>
+          </div>
+        </form>
+        <section class="card" aria-labelledby="tl-h">
+          <h2 id="tl-h">Timeline</h2>
+          <ol class="timeline">
+            <li><strong>09:41</strong> First alert: Gi0/1 down</li>
+            <li><strong>09:43</strong> 19 related alerts grouped</li>
+            <li><strong>09:49</strong> Engineer opened incident</li>
+            <li><strong>10:20</strong> Traffic moved to standby link</li>
+            <li><strong>10:44</strong> Transceiver replaced</li>
+            <li><strong>10:55</strong> Engineer confirmed recovery</li>
+          </ol>
+          <p class="muted">Time to identify cause: 8 minutes (MET-002).</p>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>
