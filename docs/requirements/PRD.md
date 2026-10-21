@@ -88,6 +88,13 @@ The Assistant reads alerts, metrics and logs from the existing monitoring system
 
 **Value proposition:** engineers handle fewer, better-explained items; juniors resolve common incidents without waiting for experts; the sponsor receives measured results.
 
+**Operating environment (assumed):**
+- **Host hardware:** One server or workstation within the owner's institution with minimum 16 GB RAM, 100 GB free storage, and GPU if available (to be confirmed in SAD, OQ-P02).
+- **Operating system:** Linux (Ubuntu 20.04 LTS or equivalent) or Windows Server 2019+.
+- **Browser:** Chrome/Edge/Firefox (latest two versions); no mobile-specific requirements.
+- **Network:** Isolated from external internet or restricted egress only to institution-approved sources; no cloud API calls.
+- **Local model:** Open-source model (e.g., Mistral, Llama, or equivalent) running on the host; no third-party API keys.
+
 ### 2.2 System context
 
 ```mermaid
@@ -141,12 +148,12 @@ Journey steps: (1) discover incidents on the dashboard; (2) understand cause; (3
 
 ### 3.3 Personas **[Assumed]** (BRD checklist item "User Personas" was In Progress; these close it, pending interviews)
 
-| ID | Persona | Role | Goals | Pain points | Tech proficiency |
-|---|---|---|---|---|---|
-| P-001 | Minh (primary) | Junior NOC engineer, 1–2 years | Resolve common incidents without escalating | Cannot tell real alerts from noise; unsure of cause | Medium |
-| P-002 | Hoa (primary) | Senior NOC engineer, 6+ years | Spend time on hard incidents, not triage or reports | Interrupted by junior escalations; reports take 40 min | High |
-| P-003 | Binh (secondary) | NOC team lead (= business owner) | Meet SLA, track metrics | No data on alert load or resolution time | Medium |
-| P-004 | Cuong (secondary) | Data-protection reviewer | Confirm data stays local | Cannot inspect AI data flows | Medium |
+| ID | Persona | Role | Experience | Goals | Pain points | Tech proficiency | Context |
+|---|---|---|---|---|---|---|---|
+| P-001 | Minh (primary) | Junior NOC engineer | 1–2 years; basic network knowledge | Resolve common incidents without escalating; build confidence | Cannot tell real alerts from noise; unsure of root cause; fears breaking something | Medium | Works 8–16 shifts per month; handles Level 1 triage |
+| P-002 | Hoa (primary) | Senior NOC engineer | 6+ years; expert in routing, MPLS, BGP | Spend time on hard incidents, not triage or routine reports | Interrupted by junior escalations; reports take 40 min each; bottleneck for team | High | On-call 3 weeks per year; mentors juniors |
+| P-003 | Binh (secondary) | NOC team lead | 4–5 years; former senior engineer | Meet SLA (95% incidents resolved in 4 hours), track metrics, plan staffing | No visibility into alert load or diagnosis time; high variance in incident resolution | High | Strategic role; reports to Network Director |
+| P-004 | Cuong (secondary) | Data-protection reviewer | Security/compliance background | Confirm data stays local; audit trail exists; access controls work | Cannot inspect AI data flows; worried about unintended leakage | Medium | Part-time role; reviews systems quarterly |
 
 ### 3.4 Constraints on needs
 Regulatory: none identified for the simulated dataset **[Assumed]**; privacy is addressed through CON-001 (REQ-014).
@@ -235,18 +242,23 @@ Each story uses *As a [persona], I want …, so that …*. Given-When-Then (GWT)
 
 | ID | Requirement | Pri | Source |
 |---|---|---|---|
-| REQ-014 | The Assistant shall process all network data and run its language model inside the owner's environment, with no data sent to third parties. | MO | BR-010 |
-| REQ-015 | The Assistant shall restrict functions by role: Engineer, Team lead, Admin. | SH | CON-001 |
-| REQ-016 | The Assistant shall log every suggestion, engineer feedback and incident closure. | SH | SN-006 |
-| REQ-017 | The Assistant shall compute MET-001 to MET-004 against baselines and export a results report. | MO | BR-011 |
+| REQ-014 | The Assistant shall process all network data inside the owner's environment and shall not send any network device data to third-party services. | MO | BR-010 |
+| REQ-014b | The Assistant shall run its language model on a locally hosted open-source model that is not accessed via external API or cloud service. | MO | BR-010, DC-01 |
+| REQ-015 | The Assistant shall enforce role-based access control with three roles: NOC Engineer (view team incidents only), Team lead (view all NOC incidents and metrics), Admin (configure system). | SH | BR-013 |
+| REQ-016 | The Assistant shall log every root-cause suggestion, engineer feedback on suggestions, and incident closure decision, with timestamp, user, and incident ID. | SH | BR-012 |
+| REQ-017 | The Assistant shall compute MET-001 to MET-004 against their BRD baselines and export a results report in Markdown format. | MO | BR-011 |
 
 **Stories**
-- **US-11 (P0)** As Cuong, I want proof that no data leaves the environment, so that I can approve use. *Traces: REQ-014.*
+- **US-11 (P0)** As Cuong, I want proof that no data leaves the environment, so that I can approve use. *Traces: REQ-014, REQ-014b.*
   - GWT: *Given* a full test run, *when* outbound network traffic is inspected, *then* no network device data leaves the permitted boundary.
+  - GWT: *Given* the Assistant running, *when* I inspect process and network logs, *then* the language model is called locally only and makes no external API calls.
 - **US-12 (P0)** As Binh, I want a results report against the baselines, so that I can show the sponsor the outcome. *Traces: REQ-017.*
   - GWT: *Given* the 30-day simulated dataset, *when* I export the report, *then* it shows baseline, measured value and pass/fail for MET-001 to MET-004.
 - **US-13 (P1)** As Binh, I want role-based access, so that only authorised people change settings. *Traces: REQ-015.*
+  - GWT: *Given* an NOC Engineer, *when* I log in, *then* I see only incidents for my team, not other teams or metrics.
+  - GWT: *Given* an Admin, *when* I log in, *then* I can access settings and role management.
 - **US-14 (P1)** As Cuong, I want an audit log, so that I can review AI suggestions later. *Traces: REQ-016.*
+  - GWT: *Given* a closed incident, *when* I access the audit log, *then* I see all suggestions made, engineer feedback, and the closure decision with timestamps.
 
 ### 5.6 Deferred / will not have (WN)
 Automatic device remediation, wireless access points, ticketing integration, replacement of the monitoring system (BRD 4.5).
@@ -257,12 +269,15 @@ Automatic device remediation, wireless access points, ticketing integration, rep
 
 ### 6.1 External interfaces
 
-| ID | Interface | Direction | Content | Note |
-|---|---|---|---|---|
-| IF-01 | Existing monitoring system | In | Alerts, SNMP/telemetry, syslog | Access method to be confirmed (ASM-002) |
-| IF-02 | Web browser | In/out | Dashboard, chat, reports | Used by engineers, lead, admin |
-| IF-03 | Local language model | Internal | Prompts, answers | No external network call |
-| IF-04 | Report export | Out | Report file | Markdown **[Assumed]** |
+| ID | Interface | Direction | Content | Protocol | Data format | Note |
+|---|---|---|---|---|---|---|
+| IF-01 | Existing monitoring system | In | Alerts, SNMP/telemetry, syslog | REST API / file dump / direct database query | JSON (alerts, metrics); plain text (syslog) | Access method to be confirmed (ASM-002, OQ-P03) |
+| IF-02 | Web browser | In/out | Dashboard, chat, reports | HTTPS (TLS 1.2+) | JSON (API), HTML/CSS/JavaScript (UI) | Used by engineers, lead, admin; must support recent Chrome/Firefox/Edge |
+| IF-03 | Local language model | Internal | Prompts, text responses | HTTP/gRPC (local) | JSON | Runs on the same host as the Assistant; no external network call |
+| IF-04 | Report export | Out | Report file | File download (HTTPS) | Markdown (.md) | User downloads to local file; no external upload |
+| IF-05 | Audit log | Internal | Audit entries (suggestions, feedback, closures) | Local database / file API | JSON | Stored locally; no export endpoint |
+
+**Hardware interfaces:** The Assistant has no direct hardware interface (e.g., no sensor input, no device control). It reaches network devices only through IF-01 (the existing monitoring system).
 
 ### 6.2 UX and UI requirements
 
@@ -293,23 +308,30 @@ Automatic device remediation, wireless access points, ticketing integration, rep
 
 All numeric values below are **[Assumed]** unless taken from the BRD.
 
-| ID | Category | Requirement | Verification |
-|---|---|---|---|
-| NFR-01 | Performance | The Assistant shall display a new incident within 60 seconds of the first related alert. | Test |
-| NFR-02 | Performance | The Assistant shall show the ranked causes within 30 seconds of opening an incident. | Test |
-| NFR-03 | Performance | The dashboard shall load within 3 seconds with 1,200 devices and 100 open incidents. | Test |
-| NFR-04 | Capacity | The Assistant shall handle at least 1,200 devices and 50 alerts per minute. | Test |
-| NFR-05 | Availability | During the evaluation period, the Assistant shall be available at least 95 % of the time. | Analysis |
-| NFR-06 | Recovery | The Assistant shall be restored within 4 hours after a failure, without losing closed incidents or reports. | Demonstration |
-| NFR-07 | Degradation | If the Assistant fails, engineers shall still be able to use the existing monitoring system unchanged. | Demonstration |
-| NFR-08 | Security | The Assistant shall require sign-in and enforce the roles in REQ-015. | Test |
-| NFR-09 | Privacy | The Assistant shall store and send no network data outside the owner's environment (CON-001). | Inspection |
-| NFR-10 | Usability | A new junior engineer shall complete the flow "open incident → confirm recovery → save report" within 30 minutes of first use, without training. | Demonstration |
-| NFR-11 | Accessibility | The web interface should meet WCAG 2.1 AA for keyboard navigation and contrast. | Inspection |
-| NFR-12 | Explainability | Every suggested cause shall show its evidence (REQ-006). | Inspection |
-| NFR-13 | Maintainability | Configuration (severity rules, escalation time) shall be changeable by an Admin without code changes. | Demonstration |
+| ID | Category | Requirement | Target | Verification |
+|---|---|---|---|---|
+| NFR-01 | Performance | The Assistant shall display a new incident within 60 seconds of the first related alert. | ≤ 60 seconds (99th percentile) | Test |
+| NFR-02 | Performance | The Assistant shall show the ranked causes within 30 seconds of opening an incident. | ≤ 30 seconds (99th percentile) | Test |
+| NFR-03 | Performance | The dashboard shall load within 3 seconds with 1,200 devices and 100 open incidents. | ≤ 3 seconds (99th percentile) | Test |
+| NFR-04 | Capacity | The Assistant shall process at least 1,200 devices and 50 alerts per minute on a single host. | ≥ 1,200 devices; ≥ 50 alerts/min | Test |
+| NFR-05 | Availability | During the evaluation period, the Assistant shall be available at least 95 % of the time. | ≥ 95 % uptime | Analysis |
+| NFR-06 | Recovery | The Assistant shall be restored within 4 hours after a failure, without losing closed incidents, reports or audit logs. | RTO ≤ 4 hours | Demonstration |
+| NFR-07 | Degradation | If the Assistant fails, engineers shall still be able to access alerts through the existing monitoring system without interruption. | Fallback to monitoring system unchanged | Demonstration |
+| NFR-08 | Security | The Assistant shall require sign-in using institutional credentials (e.g., LDAP) and enforce role-based access control per REQ-015. | Authentication required; RBAC enforced | Test |
+| NFR-09 | Privacy | The Assistant shall store and send no network device data outside the owner's environment; all processing occurs locally. | No outbound network data | Inspection |
+| NFR-10 | Usability | A new junior engineer shall complete the flow "open incident → review causes → confirm recovery → save report" within 30 minutes of first use, without prior training. | ≤ 30 minutes; no training | Demonstration |
+| NFR-11 | Accessibility | The web interface should meet WCAG 2.1 AA for keyboard navigation, color contrast, and screen-reader support. | WCAG 2.1 AA | Inspection |
+| NFR-12 | Explainability | Every suggested cause shall display at least one supporting alert, metric or log line cited by line number or ID. | 100% of suggestions cited | Inspection |
+| NFR-13 | Maintainability | Configuration (severity rules, escalation time, access roles, data retention) shall be changeable by an Admin through a UI without code changes. | Admin UI for all config | Demonstration |
+| NFR-14 | Scalability | The Assistant shall support growth to 2,000 devices and 100 alerts per minute without code changes; horizontal scaling possible via load balancing. | 2,000 devices; 100 alerts/min (stretch) | Analysis |
 
-This section closes BRD checklist gaps for availability, security policy and compliance: NFR-05 to NFR-09 and NFR-13 (see Section 12).
+**Definitions of terms:**
+- **Plain language** (REQ-008, NFR-10): English sentences without jargon, suitable for engineers with 1–2 years experience; avoid "correlation coefficient", use "multiple alerts from one failure" instead.
+- **Low confidence** (Section 6.2): Prediction confidence below 50%; clearly labeled as uncertain.
+- **Probable cause** (REQ-005, AC-005): Most likely root event; top-3 means the actual root is within the three highest-ranked candidates.
+- **Evidence** (REQ-006, NFR-12): A specific alert, metric value, or log line that supports a cause hypothesis; must be citable (e.g., "alert ID 1234", "metric cpu_usage=95%").
+
+This section closes BRD checklist gaps for availability, security policy, compliance and scalability: NFR-05 to NFR-14 (see Section 12).
 
 ---
 
@@ -318,10 +340,20 @@ This section closes BRD checklist gaps for availability, security policy and com
 | ID | Constraint | Source |
 |---|---|---|
 | DC-01 | The language model shall be an open-source model hosted in the owner's environment. | CON-001, user decision 2026-10-20 |
-| DC-02 | Only simulated or public data shall be used for evaluation. | CON-002 |
-| DC-03 | The system shall run on the project owner's own hardware **[Assumed]** (one workstation or lab server). | CON-001, CON-003 |
+| DC-02 | Only simulated or public data shall be used for evaluation; no production network data. | CON-002 |
+| DC-03 | The system shall run on the project owner's own hardware (single server or workstation, minimum 16 GB RAM, 100 GB storage). | CON-001, CON-003 |
 | DC-04 | Delivery by 2027-02-12 with a budget of USD 500 (simulated). | CON-003 |
-| DC-05 | The Assistant shall read from, and not replace, the existing monitoring system. | BRD 4.5 |
+| DC-05 | The Assistant shall read from, and not replace, the existing monitoring system; no changes to the existing system are required. | BRD 4.5 |
+| DC-06 | All inter-process communication shall use HTTPS, TLS 1.2+, or local IPC; no unencrypted network traffic. | NFR-08, BR-010 |
+
+## 8.1 Dependencies
+
+| ID | Dependency | Type | Status | Impact if unavailable | Owner | Due date |
+|---|---|---|---|---|---|---|
+| DEP-01 | Access to simulated or public dataset (1,200 devices, 30 seeded incidents, 30-day duration) per BRD Appendix 4.15 | Data | TBD | Cannot evaluate the Assistant; no metrics measured | Project owner | 2026-11-16 |
+| DEP-02 | Availability of open-source language model(s) suitable for local hosting (e.g., Mistral, Llama 2 7B, or equivalent) and ability to run on target hardware | Tool / Library | TBD | Cannot implement REQ-005, REQ-006 (ranking causes); fallback to rule-based ranking | Project owner | 2026-12-14 |
+| DEP-03 | Access to the existing monitoring system API or data export (alerts, SNMP/telemetry, syslog) per IF-01 | System access | TBD | Cannot implement REQ-001, REQ-002 (read alerts, group); no Assistant capability | Project owner | 2026-11-09 |
+| DEP-04 | Institutional support for local model hosting (hardware allocation, network isolation, approval for open-source license) | Organizational | TBD | Delays or blocks deployment; may trigger re-design | Project owner / IT | 2026-11-30 |
 
 ---
 
@@ -342,19 +374,23 @@ This section closes BRD checklist gaps for availability, security policy and com
 
 | Objective | Need | BRD requirement | PRD requirement(s) | Story | Verification |
 |---|---|---|---|---|---|
-| OBJ-001 | S-001 | BR-001 | REQ-001, REQ-004, REQ-018 | US-02 | Test / Analysis |
-| OBJ-001 | S-001 | BR-002 | REQ-002 | US-01 | Test |
-| OBJ-001 | S-001 | BR-003 | REQ-003 | US-03 | Test |
-| OBJ-002 | S-001 | BR-004 | REQ-005, REQ-007 | US-04, US-07 | Analysis |
-| OBJ-002 | S-001 | BR-005 | REQ-005, REQ-006 | US-04 | Demonstration |
-| OBJ-003 | S-001 | BR-006 | REQ-005, REQ-008, REQ-010, REQ-013 | US-04, US-08, US-09 | Demonstration |
-| OBJ-003 | S-001 | BR-007 | REQ-008, REQ-009 | US-05, US-06 | Demonstration |
-| OBJ-004 | S-001 | BR-008 | REQ-011 | US-10 | Demonstration |
-| OBJ-004 | S-001 | BR-009 | REQ-011, REQ-012 | US-10 | Analysis |
-| CON-001 | S-003 | BR-010 | REQ-014, REQ-015, REQ-016 | US-11, US-13, US-14 | Inspection |
-| OBJ-001 to 004 | S-002 | BR-011 | REQ-017 | US-12 | Analysis |
+| BO-001 | SN-001 | BR-001 | REQ-001, REQ-004, REQ-018 | US-02 | Test / Analysis |
+| BO-001 | SN-001 | BR-002 | REQ-002 | US-01 | Test |
+| BO-001 | SN-001 | BR-003 | REQ-003 | US-03 | Test |
+| BO-002 | SN-002 | BR-004 | REQ-005, REQ-007 | US-04, US-07 | Analysis |
+| BO-002 | SN-002 | BR-005 | REQ-005, REQ-006 | US-04 | Demonstration |
+| BO-003 | SN-003 | BR-006 | REQ-005, REQ-008, REQ-010, REQ-013 | US-04, US-08, US-09 | Demonstration |
+| BO-003 | SN-003 | BR-007 | REQ-008, REQ-009 | US-05, US-06 | Demonstration |
+| BO-004 | SN-004 | BR-008 | REQ-011 | US-10 | Demonstration |
+| BO-004 | SN-004 | BR-009 | REQ-011, REQ-012 | US-10 | Analysis |
+| CON-001 | SN-006 | BR-010 | REQ-014, REQ-014b, REQ-015, REQ-016 | US-11, US-13, US-14 | Inspection |
+| CON-001 | SN-006 | BR-012 | REQ-016 | US-14 | Inspection |
+| CON-001 | SN-006 | BR-013 | REQ-015 | US-13 | Inspection |
+| SN-001, SN-002 | SN-001, SN-002 | BR-014 | (Fallback behavior; no PRD requirement, handled in SAD) | — | Demonstration |
+| SN-002, SN-005 | SN-002, SN-005 | BR-015 | (Recovery SLA; no specific PRD requirement, addressed by NFR-06, DC-03) | — | Demonstration |
+| BO-001 to BO-004 | SN-005 | BR-011 | REQ-017 | US-12 | Analysis |
 
-**Coverage:** every BRD requirement (BR-001 to BR-011) maps to at least one REQ; every REQ has a source and a verification method; no orphan requirements.
+**Coverage:** every BRD requirement (BR-001 to BR-015) maps to at least one PRD requirement or is addressed in constraints/NFRs; every REQ has a source and a verification method; no orphan requirements.
 
 ---
 
@@ -396,25 +432,60 @@ Events are stored locally only (no external analytics).
 
 | Check | Result |
 |---|---|
-| Every REQ uses *shall* and one obligation | Yes |
+| Every REQ uses *shall* and one obligation | Yes; REQ-014 split into REQ-014 and REQ-14b |
 | No design detail except in Section 8 constraints | Yes |
 | Every REQ has source, priority, verification | Yes |
 | Every P0 story has Given-When-Then criteria | Yes |
-| Quantities are stated where they affect acceptance | Yes; NFR values are **[Assumed]** |
-| Edge cases and error states covered | Yes (6.2) |
-| BRD checklist gaps now addressed in PRD | Vision (1.7), to-be flow (2.3), scenarios (US-01 to US-14), availability / recovery (NFR-05 to 07), security (NFR-08, REQ-015), personas (3.3); regulatory compliance recorded as none identified (3.4). These should also be added to the BRD. |
+| Quantities are stated where they affect acceptance | Yes; NFR values are **[Assumed]** and marked (OQ-P02) |
+| Edge cases and error states covered | Yes (Section 6.2) |
+| Unambiguous language: all terms defined or familiar | Yes; definitions added in Section 7 (plain language, low confidence, probable cause, evidence) |
+| BRD checklist gaps now addressed in PRD | Vision (1.7), to-be flow (2.3), scenarios (4.3), availability / recovery (NFR-05 to NFR-07), security policy (NFR-08, DC-06, REQ-015 role matrix), personas (3.3), operating environment (2.1), scalability (NFR-14), dependencies (8.1), compliance (3.4). These are also being added to the BRD. |
+
+## 12.1 Term definitions
+
+| Term | Definition |
+|---|---|
+| **Plain language** | English sentences without jargon, understandable by engineers with 1–2 years experience (e.g., "Multiple alerts from a single failed link" instead of "correlated events from a single failure event"). |
+| **Low confidence** | Prediction confidence below 50 %; clearly labeled as uncertain in the UI. |
+| **Probable cause** | The most likely root event or condition that explains an incident; "top 3" means the actual root is within the three highest-ranked candidates. |
+| **Evidence** | A specific alert, metric value, or log line that supports a cause hypothesis; must be citable (e.g., "alert ID 1234", "metric cpu_usage=95%", "log line from 14:05 UTC"). |
+| **Incident** | A group of alerts determined to originate from a single underlying event or fault. |
+| **Escalation** | When an engineer forwards an incident to a more senior expert because the junior engineer cannot resolve it. |
+| **Audit log** | A record of all system actions (suggestions, feedback, closures) with timestamp, user ID, and incident ID; tamper-proof and read-only. |
 
 ## 13. Open Questions and Risks
 
 | ID | Item | Owner | Needed by | Status |
 |---|---|---|---|---|
-| OQ-P01 | Confirm personas P-001 to P-004 through interviews | Project owner | 2026-11-09 | Open |
-| OQ-P02 | Confirm NFR values marked [Assumed] (NFR-01 to NFR-06, NFR-10, DC-03) | Project owner / sponsor | 2026-11-16 | Open |
-| OQ-P03 | How will the Assistant receive data from the existing monitoring system (ASM-002)? | Project owner | 2026-11-09 | Open |
-| OQ-P04 | Which open-source model meets the 80 % top-3 target on local hardware? | Project owner | 2026-12-14 | Open (design phase) |
-| RSK-P01 | Local model weaker than expected → top-3 target missed | Project owner | 2026-12-14 | Mitigate: evaluate several models; fall back to rule-based ranking |
-| RSK-P02 | Simulated baselines unrealistic (BRD RSK-001) | Project owner | 2026-11-16 | Re-measure on dataset |
+| OQ-P01 | Confirm personas P-001 to P-004 through interviews with NOC engineers | Project owner | 2026-11-09 | Open |
+| OQ-P02 | Confirm NFR values marked [Assumed]: NFR-01 to NFR-06, NFR-10, NFR-14, DC-03 (host hardware specs) | Project owner / sponsor | 2026-11-16 | Open |
+| OQ-P03 | Close IF-01: How will the Assistant receive data from the existing monitoring system? (API, database query, file dump?) | Project owner | 2026-11-09 | Open |
+| OQ-P04 | Which open-source model(s) meet the 80% top-3 cause-ranking target on local hardware? | Project owner | 2026-12-14 | Open (design phase) |
+| OQ-P05 | Confirm operating environment: minimum RAM, storage, OS, browser support (Section 2.1) | Project owner / IT | 2026-11-16 | Open |
+| OQ-P06 | Define role permissions matrix (engineer, team lead, admin): who can see what data, edit what settings? | Project owner | 2026-11-16 | Open; affects REQ-015 acceptance criteria |
+| OQ-P07 | Confirm scalability target: should the Assistant support growth beyond 1,200 devices? If yes, to how many? | Sponsor | 2026-12-14 | Open; affects NFR-14 and architecture |
+| RSK-P01 | Local model weaker than expected → top-3 cause-ranking target missed (AC-005, AC-006) | Project owner | 2026-12-14 | Mitigate: evaluate 2–3 models early; fall back to rule-based ranking if none meet 80% |
+| RSK-P02 | Simulated baselines unrealistic (BRD RSK-001) → reported benefits unreliable | Project owner | 2026-11-16 | Re-measure baselines on the simulated dataset before reporting results to sponsor |
+| RSK-P03 | Existing monitoring system access restricted or changes → IF-01 integration blocked | Project owner | 2026-11-09 | Confirm access with system owner; document access method in SAD |
 
 ## 14. Readiness statement
 
-**Ready with conditions.** Conditions: OQ-P01 to OQ-P03 closed or accepted; simulated BRD values replaced if real data becomes available. Next step: Software Architecture Description (SAD).
+**Ready with conditions.** 
+
+The PRD is complete and all Must-have (P0) requirements have acceptance criteria and verification methods. All gaps identified in the PRD checklist have been addressed:
+- **Operating environment** (Section 2.1): specified hardware, OS, browser.
+- **Functional requirements** (Section 5): REQ-014 split into two singular requirements; REQ-008, REQ-010 have measurable acceptance criteria via reviewer rating.
+- **Security & access control** (REQ-015): role-based matrix added; dependency DEP-04 tracks approval.
+- **Scalability** (NFR-14): stretch target defined; decision on growth needed (OQ-P07).
+- **Software interfaces** (Section 6.1): protocols and data formats specified; ASM-002 and OQ-P03 track monitoring system access method.
+- **Communication protocols** (Section 6.1): HTTPS (TLS 1.2+), local HTTP/gRPC specified.
+- **Dependencies** (Section 8.1): DEP-01 to DEP-04 added with owners and due dates.
+- **Unambiguous language** (Section 12.1): key terms (plain language, evidence, probable cause, low confidence) defined.
+
+**Conditions for approval:**
+1. Close or accept: OQ-P01, OQ-P02, OQ-P03, OQ-P05, OQ-P06, OQ-P07 by the indicated dates.
+2. Confirm personas P-001 to P-004 through NOC engineer interviews (OQ-P01).
+3. Confirm simulated BRD baselines and targets are realistic (BRD RSK-001, RSK-P02).
+4. Assess feasibility of 80% top-3 cause-ranking target on local hardware; identify model candidates (OQ-P04, RSK-P01).
+
+**Next step:** Software Architecture Description (SAD). Design phase should confirm if all assumed NFR values are achievable and finalize role-permission details (OQ-P06).

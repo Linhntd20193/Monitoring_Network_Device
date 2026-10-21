@@ -46,6 +46,12 @@
 | 0.1 | 2026-10-19 | Nguyen Trieu Dieu Linh | Skeleton, no business inputs |
 | 0.2 | 2026-10-19 | Nguyen Trieu Dieu Linh | Populated from elicitation answers (SRC-001) |
 
+## Vision Statement
+
+> **The Assistant ensures that any NOC engineer—regardless of experience—can navigate alert storms, diagnose incidents with confidence, and close them completely within minutes, all without exposing network data outside the organization's own infrastructure.**
+
+This vision aligns the project with the organization's goal of building resilient, autonomous network operations that do not depend on a small group of experts and that maintain data sovereignty.
+
 ## 4.2 Executive summary
 
 - **Problem:** The network contains more than 1,000 devices. Operations staff receive many noisy alerts, and finding the cause of an incident depends on scarce analysis skills (SRC-001). Quantified impact **[Simulated]**: about 25 high-severity incidents per month, each costing about 90 minutes of diagnosis, and roughly 120 engineer-hours per month spent on noisy alerts and manual reports.
@@ -72,7 +78,38 @@ flowchart LR
     E --> R[Incident resolved and reported manually]
 ```
 
-- **Who is affected:** NOC / network operations engineers (STK-001) (SRC-001).
+**Proposed state (To-Be workflow)**
+
+1. Devices emit SNMP/telemetry and syslog (unchanged).
+2. The existing monitoring system raises alerts (unchanged).
+3. **The Assistant groups related alerts into incidents and suppresses noise.**
+4. The NOC engineer opens the dashboard and sees ranked incidents with probable causes and evidence.
+5. **The engineer follows the suggested action or asks the Assistant in chat; the Assistant provides plain-language guidance.**
+6. The engineer confirms the incident resolved; **the Assistant drafts a report ready for review.**
+
+```mermaid
+flowchart LR
+    D[Devices > 1,000<br/>SNMP / telemetry / syslog] --> M[Existing monitoring system]
+    M --> A[Alerts]
+    A --> C[Assistant:<br/>group + rank + rank causes]
+    C --> E[NOC engineer:<br/>reviews dashboard]
+    E --> S{Ask Assistant<br/>or act?}
+    S -->|Ask| CHAT[Chat with Assistant]
+    CHAT --> ACT[Act on suggestion]
+    S -->|Act| ACT
+    ACT --> RES{Resolved?}
+    RES -->|Yes| REP[Assistant drafts report<br/>Engineer reviews & saves]
+    RES -->|No| ESC[Escalate to expert]
+    REP --> DONE[Incident closed]
+    ESC --> DONE
+```
+
+**Operational scenarios (examples; to be detailed in PRD and design)**
+- **Alert storm from one link failure:** 50 alerts arrive from a failed link and dependent services. The Assistant groups them as one Critical incident, shows the link-failure root cause with evidence, and recommends "check interface status and bring link online". A junior engineer follows the recommendation and resolves the incident in 10 minutes without waiting for an expert.
+- **Configuration error during change window:** A routing flap generates repeated alerts and a configuration mismatch alert. The Assistant identifies a configuration error as the likely cause, shows the affected config lines, and suggests "compare running and startup configs; re-apply the intended config". The engineer confirms and resolves.
+- **Hardware fault with cascading alerts:** A faulty memory module triggers device overload, loss of redundancy, and a hardware alarm. The Assistant ranks the hardware fault as top cause, recommends "schedule replacement and monitor for redundancy restoration", and the engineer escalates to the hardware team. The Assistant drafts a report documenting the timeline and the escalation decision.
+
+- **Who is affected:** NOC / network operations engineers (STK-001) (SRC-001); sponsor and evaluators for evidence; data-protection reviewer for data handling.
 - **Cost of inaction** **[Simulated]:** about 120 engineer-hours per month lost, longer outages, and continued dependence on a few experts.
 - **Root causes (stated):** shortage of analysis staff/skills; noisy alerting (SRC-001). Deeper causes **[Simulated]:** fixed-threshold alert rules that ignore context, no correlation across devices, and diagnostic knowledge held by individuals rather than recorded.
 - **Why now:** Learning/research initiative with a fixed delivery window (CON-003).
@@ -106,19 +143,20 @@ flowchart LR
 
 | ID | Stakeholder / group | Role in the business | Interest | Influence | Needs | Source |
 |---|---|---|---|---|---|---|
-| STK-001 | NOC / network operations engineers | Monitor devices, triage alerts, resolve and report incidents | Fewer false alerts, faster diagnosis, less reporting effort | Medium | SN-001 to SN-004 | SRC-001 |
+| STK-001a | NOC / network operations engineers — junior (1–3 years) | Monitor alerts, resolve common incidents | Faster diagnosis without expert help; clear guidance | Medium | SN-001, SN-003 | SRC-001 |
+| STK-001b | NOC / network operations engineers — senior (6+ years) | Handle complex incidents, review junior work | Spend time on hard incidents, not triage or routine reports | Medium | SN-002, SN-004 | SRC-001 |
+| STK-001c | NOC team lead | Manage team, track SLA and metrics | Alert load and resolution time metrics; junior team capability | High | SN-001, SN-005 | SRC-001 |
 | STK-002 | Sponsor / evaluator of the learning project **[Simulated]** | Approves scope and evaluates results | Measurable results within time and budget | High | SN-005 | Simulated |
-| STK-003 | Data-protection reviewer **[Simulated]** | Checks data handling | Network data stays in the permitted boundary | High | SN-006 | Simulated |
+| STK-003 | Data-protection reviewer **[Simulated]** | Checks data handling | Network data stays in the permitted boundary; audit trail | High | SN-006 | Simulated |
 
 | ID | Stakeholder | Need statement | Current pain | Evidence | Priority |
 |---|---|---|---|---|---|
-| SN-001 | STK-001 | I need to see only alerts that matter | Too many noisy alerts | SRC-001 | Must |
-| SN-002 | STK-001 | I need to find the cause of an incident quickly | Analysis is slow and skill-dependent | SRC-001 | Must |
-| SN-003 | STK-001 | I need to resolve common incidents without waiting for an expert | Few staff have deep analysis skills | SRC-001 | Must |
-| SN-004 | STK-001 | I need incident reports produced without writing them by hand | Reporting is manual | SRC-001 | Should |
-
-| SN-005 | STK-002 | I need evidence that the stated targets are met | Results cannot be judged without measurement | Simulated | Must |
-| SN-006 | STK-003 | I need assurance that no network data leaves the permitted boundary | Data leakage risk | Simulated | Must |
+| SN-001 | STK-001a, STK-001b | I need to see only alerts that matter | Too many noisy alerts obscure real incidents | SRC-001 | Must |
+| SN-002 | STK-001a, STK-001b | I need to find the cause of an incident quickly | Manual analysis is slow; complex cases escalate to experts | SRC-001 | Must |
+| SN-003 | STK-001a | I need to resolve common incidents without waiting for an expert | Junior engineers lack the experience to diagnose alone | SRC-001 | Must |
+| SN-004 | STK-001b, STK-001c | I need incident reports produced without manual writing | Reporting after every incident costs 30–40 minutes per incident | SRC-001 | Should |
+| SN-005 | STK-001c, STK-002 | I need to see alert load and resolution-time metrics to track SLA and team capability | No current visibility into work volume or diagnosis speed | SRC-001, Simulated | Must |
+| SN-006 | STK-003 | I need assurance that no network data leaves the permitted boundary and a complete audit trail | Data leakage risk; compliance requirement | Simulated | Must |
 
 Adoption blockers **[Simulated]**: NOC engineers who distrust automated suggestions, and the data-protection reviewer if CON-001 cannot be demonstrated. Priorities reflect the order given in SRC-001 and need confirmation.
 
@@ -155,12 +193,21 @@ Quantities use simulated baselines and targets (OQ-010) and must be re-confirmed
 | BR-008 | When an incident is closed, the organization **shall** produce an incident report summarizing the timeline, cause and actions taken. | Removes manual reporting | BO-004 / SN-004 | Should | AC-008 | Demonstration | Draft |
 | BR-009 | The organization **shall** reduce engineer time per incident report by at least 70% (from 40 to no more than 12 minutes) against the MET-004 baseline. | Quantifies BO-004 | BO-004 / SN-004 | Should | AC-009 | Analysis | Draft |
 
-### Data protection
+### Data protection and auditability
 
 | ID | Requirement | Rationale | Source | Priority | Acceptance criteria | Verification | Status |
 |---|---|---|---|---|---|---|---|
-| BR-010 | The organization **shall** keep all network device data within the boundary defined in CON-001. | Stated constraint | CON-001 / SN-006 | Must | AC-010 | Inspection | Draft |
+| BR-010 | The organization **shall** keep all network device data within the boundary defined in CON-001. | Stated constraint; data sovereignty | CON-001 / SN-006 | Must | AC-010 | Inspection | Draft |
+| BR-012 | The organization **shall** maintain an audit log of every root-cause suggestion, engineer feedback, and incident closure decision that can be reviewed by the data-protection reviewer and sponsor. | Regulatory best practice; enable accountability | SN-006 | Should | AC-012 | Inspection | Draft |
+| BR-013 | The organization **shall** define and document who may access incident data (NOC engineers may view their own incidents and team incidents; team lead may view all NOC incidents; data-protection reviewer may access audit logs; sponsor may view aggregated metrics only). | Enable controlled access; protect sensitive analysis | SN-006 | Should | AC-013 | Inspection | Draft |
 | BR-011 | At the end of the project, the organization **shall** report MET-001 to MET-004 against their baselines, measured on the dataset in Appendix 4.15. | Sponsor needs evidence of results | BO-001 to BO-004 / SN-005 | Must | AC-011 | Review | Draft |
+
+### System availability and resilience
+
+| ID | Requirement | Rationale | Source | Priority | Acceptance criteria | Verification | Status |
+|---|---|---|---|---|---|---|---|
+| BR-014 | If the Assistant becomes unavailable, NOC engineers **shall** continue to use the existing monitoring system unchanged without service interruption. | Avoid creating a single point of failure; existing system is the ground truth | SN-001, SN-002 | Must | AC-014 | Demonstration | Draft |
+| BR-015 | The organization **shall** recover the Assistant and resume service within 4 hours of a failure, without losing closed incidents, reports or audit logs. | Limit impact on incident response; protect data integrity | SN-002, SN-005 | Should | AC-015 | Demonstration | Draft |
 
 ### Acceptance criteria
 
@@ -177,6 +224,10 @@ Quantities use simulated baselines and targets (OQ-010) and must be re-confirmed
 | AC-009 | MET-004 is at most 12 minutes (at least 70% below the 40-minute baseline). |
 | AC-010 | A review shows no network device data leaves the CON-001 boundary. |
 | AC-011 | A results report states baseline, measured value and pass/fail for each of MET-001 to MET-004, and the sponsor accepts it. |
+| AC-012 | An audit log exists recording every suggestion, feedback, and closure; spot-check of 50 entries confirmed accurate and retrievable by authorized reviewer. |
+| AC-013 | Role-based access is implemented and verified: NOC engineers access only their team's incidents, team lead accesses all NOC incidents, data-protection reviewer accesses audit logs only, sponsor accesses metrics report only. |
+| AC-014 | During a 4-hour outage of the Assistant, NOC engineers successfully access and triage alerts through the existing monitoring system unchanged. |
+| AC-015 | After simulated failure and 4-hour recovery, all closed incidents, reports and audit logs are intact and accessible. |
 
 ## 4.8 Business rules
 
@@ -190,9 +241,10 @@ Quantities use simulated baselines and targets (OQ-010) and must be re-confirmed
 
 | ID | Constraint | Type | Imposed by | Impact | Source |
 |---|---|---|---|---|---|
-| CON-001 | Network data shall not leave the project owner's own computing environment (local machines or institution-controlled lab); no third-party cloud GenAI service may receive it **[Simulated]** | Organizational | Project supervisor **[Simulated]** | Limits where analysis may run | SRC-001 |
-| CON-002 | Only simulated or publicly available data is used | Organizational | Project | No production data for validation; metrics are measured on simulated data | SRC-001 |
-| CON-003 | **[Simulated]** Delivery within 16 weeks (by 2027-02-12) and a budget of USD 500 | Time / Budget | Project supervisor | Limits scope and compute available | Simulated (OQ-007) |
+| CON-001 | Network data shall not leave the project owner's own computing environment (local machines or institution-controlled lab); no third-party cloud GenAI service may receive it **[Simulated]** | Organizational / Data Sovereignty | Project supervisor **[Simulated]** | Limits where analysis may run; model must be open-source and locally hosted | SRC-001 |
+| CON-002 | Only simulated or publicly available data is used for evaluation; no production network data | Organizational / Data Protection | Project | No production data for validation; metrics are measured on simulated data; real network isolation from testing | SRC-001 |
+| CON-003 | **[Simulated]** Delivery within 16 weeks (by 2027-02-12) and a budget of USD 500 | Time / Budget | Project supervisor | Limits scope, hardware, and compute available | Simulated (OQ-007) |
+| CON-004 | **[Assumed from institutional context]** No applicable external regulatory requirements (e.g., GDPR, HIPAA, PCI-DSS) for this learning/research project on simulated data | Compliance | Institution | If institution later uses production data, CON-004 must be re-assessed and additional regulatory requirements added | Simulated |
 
 ## 4.10 Assumptions, dependencies, and risks
 
@@ -219,6 +271,10 @@ Quantities use simulated baselines and targets (OQ-010) and must be re-confirmed
 | BO-004 | SN-004 | BR-008 | AC-008 | [TBD] |
 | BO-004 | SN-004 | BR-009 | AC-009 | [TBD] |
 | CON-001 | SN-006 | BR-010 | AC-010 | [TBD] |
+| CON-001 | SN-006 | BR-012 | AC-012 | [TBD] |
+| CON-001 | SN-006 | BR-013 | AC-013 | [TBD] |
+| SN-001, SN-002 | SN-001, SN-002 | BR-014 | AC-014 | [TBD] |
+| SN-002, SN-005 | SN-002, SN-005 | BR-015 | AC-015 | [TBD] |
 | BO-001 to BO-004 | SN-005 | BR-011 | AC-011 | [TBD] |
 
 **Coverage**
