@@ -1,0 +1,103 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: noc-app
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=incidents_user
+      - DB_PASSWORD=local_dev_password_change_in_prod
+      - DB_NAME=incidents
+      - LLM_URL=http://ollama:11434
+      - LLM_MODEL=llama2:7b
+      - REDIS_URL=redis://redis:6379
+      - LOG_LEVEL=debug
+    depends_on:
+      - db
+      - ollama
+      - redis
+    volumes:
+      - ./src:/app/src
+      - ./node_modules:/app/node_modules
+    networks:
+      - noc-network
+
+  db:
+    image: postgres:15-alpine
+    container_name: noc-db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=incidents_user
+      - POSTGRES_PASSWORD=local_dev_password_change_in_prod
+      - POSTGRES_DB=incidents
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U incidents_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - noc-network
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: noc-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/version"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - noc-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: noc-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - noc-network
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: noc-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    networks:
+      - noc-network
+
+volumes:
+  postgres_data:
+  ollama_models:
+  redis_data:
+  prometheus_data:
+
+networks:
+  noc-network:
+    driver: bridge

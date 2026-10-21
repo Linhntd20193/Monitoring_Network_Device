@@ -1,0 +1,106 @@
+openapi: 3.0.0
+info:
+  title: GenAI NOC Assistant API
+  version: 0.1.0
+  description: Network Operations Center Assistant with GenAI-powered incident analysis
+  contact:
+    name: Development Team
+  license:
+    name: MIT
+
+servers:
+  - url: http://localhost:3000
+    description: Local development
+  - url: https://noc-ai.example.com
+    description: Production (placeholder)
+
+paths:
+  /health:
+    get:
+      summary: Health check
+      tags: [System]
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  timestamp:
+                    type: string
+                    format: date-time
+
+  /api/incidents:
+    get:
+      summary: List incidents (to be implemented)
+      tags: [Incidents]
+      description: Retrieve list of incidents with filtering and pagination
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [open, closed, escalated]
+        - name: severity
+          in: query
+          schema:
+            type: string
+            enum: [Critical, Major, Minor]
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: List of incidents
+        '400':
+          description: Invalid parameters
+
+components:
+  schemas:
+    Incident:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        severity:
+          type: string
+          enum: [Critical, Major, Minor]
+        affected_devices:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+          enum: [open, closed, escalated]
+        created_at:
+          type: string
+          format: date-time
+        closed_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        code:
+          type: string
+        requestId:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
