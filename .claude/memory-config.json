@@ -1,0 +1,92 @@
+{
+  "memory_system": {
+    "type": "optimized",
+    "version": "1.0",
+    "last_updated": "2026-11-02"
+  },
+  "memory_optimization": {
+    "prompt_cache": {
+      "enabled": true,
+      "ttl_minutes": 60,
+      "strategy": "smart",
+      "description": "Enable prompt caching for repeated requests; refresh hourly"
+    },
+    "context_management": {
+      "window_size": 32000,
+      "compression": "enabled",
+      "priority_levels": {
+        "high": "Keep in context (CLAUDE.md, active requirements)",
+        "medium": "Load on demand (design docs, test plans)",
+        "low": "Archive (completed analysis, old notes)"
+      }
+    },
+    "artifact_cache": {
+      "enabled": true,
+      "storage": ".claude/artifacts/",
+      "ttl_hours": 24,
+      "max_size_mb": 100
+    }
+  },
+  "memory_files": {
+    "user_profile": {
+      "file": "projects/e--GenAI-Monitoring-Network-Device/memory/user_role.md",
+      "type": "user",
+      "description": "User role and preferences for this project"
+    },
+    "project_context": {
+      "file": "projects/e--GenAI-Monitoring-Network-Device/memory/project_context.md",
+      "type": "project",
+      "description": "Active project goals and timeline"
+    },
+    "testing_feedback": {
+      "file": "projects/e--GenAI-Monitoring-Network-Device/memory/feedback_testing.md",
+      "type": "feedback",
+      "description": "Testing approach preferences and patterns that work"
+    },
+    "design_references": {
+      "file": "projects/e--GenAI-Monitoring-Network-Device/memory/reference_design_docs.md",
+      "type": "reference",
+      "description": "Where design documents and templates are located"
+    }
+  },
+  "context_priorities": {
+    "always_load": [
+      "CLAUDE.md",
+      ".claude/agents.json",
+      ".claude/memory-config.json"
+    ],
+    "load_on_demand": [
+      "docs/design/blueprint.md",
+      "testing/TEST_REPORT.md",
+      "docs/implement/Implementation_Plan.md"
+    ],
+    "archive": [
+      "completed analysis files",
+      "old iteration results"
+    ]
+  },
+  "parallel_processing": {
+    "enabled": true,
+    "fork_support": true,
+    "max_forks": 2,
+    "memory_isolation": "context_inherited",
+    "description": "Use fork pattern for parallel test analysis and design reviews"
+  },
+  "recommendations": {
+    "for_performance": [
+      "Enable prompt caching for repeated tasks",
+      "Use fork pattern for independent analyses",
+      "Load design docs on-demand, not always"
+    ],
+    "for_reliability": [
+      "Keep CLAUDE.md updated with project status",
+      "Maintain memory files for continuity",
+      "Use artifact caching for large outputs"
+    ],
+    "for_scalability": [
+      "Organize skills by capability (report-*, design-*)",
+      "Use sub-agents for complex tasks",
+      "Compress old context after each phase"
+    ]
+  }
+}

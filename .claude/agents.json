@@ -1,0 +1,67 @@
+{
+  "agents": [
+    {
+      "name": "test-report-agent",
+      "description": "Multi-agent for comprehensive test report generation, analysis, and aggregation",
+      "role": "QA Automation",
+      "capabilities": [
+        "report-generator",
+        "report-analyzer",
+        "report-aggregator"
+      ],
+      "dependencies": [
+        "testing/filterIncidents.js",
+        "testing/TEST_CASES.md",
+        "docs/design/blueprint.md"
+      ],
+      "memory_optimized": true,
+      "cache_enabled": true,
+      "max_tokens": 32000,
+      "timeout_seconds": 300
+    },
+    {
+      "name": "design-review-agent",
+      "description": "Design document review and validation agent",
+      "role": "Architecture & Design",
+      "capabilities": [
+        "blueprint-validator",
+        "architecture-reviewer"
+      ],
+      "dependencies": [
+        "docs/design/blueprint.md",
+        "docs/design/BluePrint_Design_IEEE_1016_2009_Checklist.xlsx"
+      ],
+      "memory_optimized": true,
+      "cache_enabled": true,
+      "max_tokens": 16000,
+      "timeout_seconds": 240
+    }
+  ],
+  "sub_agents": [
+    {
+      "id": "fork-test-analysis",
+      "type": "fork",
+      "parent": "test-report-agent",
+      "description": "Parallel test analysis using fork pattern",
+      "memory_context": "inherited"
+    }
+  ],
+  "configuration": {
+    "memory_management": {
+      "mode": "optimized",
+      "context_window": 32000,
+      "cache_strategy": "lru",
+      "prompt_cache_ttl_minutes": 60
+    },
+    "parallel_execution": {
+      "enabled": true,
+      "max_parallel": 2,
+      "timeout_seconds": 300
+    },
+    "error_handling": {
+      "retry_count": 3,
+      "retry_delay_ms": 1000,
+      "graceful_degradation": true
+    }
+  }
+}
