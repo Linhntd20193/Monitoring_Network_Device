@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Results — NOC Assistant</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">NOC Assistant <small>GenAI Network Device Monitoring</small></div>
+    <nav aria-label="Main">
+      <ul class="nav">
+        <li><a href="dashboard.html">Incidents</a></li>
+        <li><a href="incident.html">Incident detail</a></li>
+        <li><a href="report.html">Report</a></li>
+        <li class="nav-label" role="presentation">Team lead</li>
+        <li><a href="results.html" aria-current="page">Results</a></li>
+        <li class="nav-label" role="presentation">Admin</li>
+        <li><a href="admin.html">Users, rules, audit</a></li>
+      </ul>
+    </nav>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <div class="who"><span class="badge neutral">Role: Team Lead</span><span>Sarah Johnson</span></div>
+      <div>
+        <button class="btn small" id="theme-toggle" type="button">Toggle dark mode</button>
+        <a class="btn small" href="login.html">Sign out</a>
+      </div>
+    </header>
+    <main class="content" id="main">
+      <div>
+        <h1>Team Results</h1>
+        <p class="muted">Performance metrics and incident resolution summary. Team Lead view.</p>
+      </div>
+
+      <section class="card">
+        <h2>Key Metrics</h2>
+        <div class="toolbar">
+          <button class="btn small" id="export-btn" type="button">Export as Markdown</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Metric</th>
+                <th scope="col">This Week</th>
+                <th scope="col">Last Week</th>
+                <th scope="col">Trend</th>
+              </tr>
+            </thead>
+            <tbody id="metric-rows">
+              <tr>
+                <td>Mean Time to Detect (MTTD)</td>
+                <td>4.2 min</td>
+                <td>6.1 min</td>
+                <td><span class="badge ok">↓ 31% better</span></td>
+              </tr>
+              <tr>
+                <td>Mean Time to Resolve (MTTR)</td>
+                <td>28 min</td>
+                <td>45 min</td>
+                <td><span class="badge ok">↓ 38% better</span></td>
+              </tr>
+              <tr>
+                <td>Critical incidents resolved in &lt; 45 min</td>
+                <td>83%</td>
+                <td>71%</td>
+                <td><span class="badge ok">↑ 12% better</span></td>
+              </tr>
+              <tr>
+                <td>False positives</td>
+                <td>2.1%</td>
+                <td>3.8%</td>
+                <td><span class="badge ok">↓ 45% better</span></td>
+              </tr>
+              <tr>
+                <td>Team satisfaction</td>
+                <td>4.6/5</td>
+                <td>4.1/5</td>
+                <td><span class="badge ok">↑ 12% better</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Incidents This Week</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Incident</th>
+                <th scope="col">Severity</th>
+                <th scope="col">MTTD</th>
+                <th scope="col">MTTR</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>2024-10-23</td>
+                <td>INC-1042 · Link failure core-sw-07</td>
+                <td><span class="badge critical">▲ Critical</span></td>
+                <td>3 min</td>
+                <td>52 min</td>
+              </tr>
+              <tr>
+                <td>2024-10-22</td>
+                <td>INC-1041 · Routing flap OSPF</td>
+                <td><span class="badge major">■ Major</span></td>
+                <td>5 min</td>
+                <td>31 min</td>
+              </tr>
+              <tr>
+                <td>2024-10-21</td>
+                <td>INC-1039 · Device overload CPU</td>
+                <td><span class="badge major">■ Major</span></td>
+                <td>7 min</td>
+                <td>18 min</td>
+              </tr>
+              <tr>
+                <td>2024-10-20</td>
+                <td>INC-1037 · BGP session down</td>
+                <td><span class="badge major">■ Major</span></td>
+                <td>2 min</td>
+                <td>15 min</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>

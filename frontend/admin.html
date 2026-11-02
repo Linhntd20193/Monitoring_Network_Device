@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin — NOC Assistant</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">NOC Assistant <small>GenAI Network Device Monitoring</small></div>
+    <nav aria-label="Main">
+      <ul class="nav">
+        <li><a href="dashboard.html">Incidents</a></li>
+        <li><a href="incident.html">Incident detail</a></li>
+        <li><a href="report.html">Report</a></li>
+        <li class="nav-label" role="presentation">Team lead</li>
+        <li><a href="results.html">Results</a></li>
+        <li class="nav-label" role="presentation">Admin</li>
+        <li><a href="admin.html" aria-current="page">Users, rules, audit</a></li>
+      </ul>
+    </nav>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <div class="who"><span class="badge neutral">Role: Admin</span><span>Admin User</span></div>
+      <div>
+        <button class="btn small" id="theme-toggle" type="button">Toggle dark mode</button>
+        <a class="btn small" href="login.html">Sign out</a>
+      </div>
+    </header>
+    <main class="content" id="main">
+      <div>
+        <h1>Administration</h1>
+        <p class="muted">Users, rules, audit logs, and system configuration.</p>
+      </div>
+
+      <div role="tablist" class="tabs">
+        <button role="tab" aria-selected="true" aria-controls="users-panel">Users</button>
+        <button role="tab" aria-selected="false" aria-controls="rules-panel">Rules</button>
+        <button role="tab" aria-selected="false" aria-controls="audit-panel">Audit log</button>
+      </div>
+
+      <!-- Users Tab -->
+      <section id="users-panel" class="card">
+        <h2>Users</h2>
+        <form id="user-form" novalidate style="margin-bottom: 24px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr 200px; gap: 12px; align-items: end;">
+            <div class="field">
+              <label for="new-name">Name</label>
+              <input id="new-name" type="text" placeholder="John Doe">
+              <div class="error" id="new-name-error" hidden>Name is required</div>
+            </div>
+            <div class="field">
+              <label for="new-role">Role</label>
+              <select id="new-role">
+                <option value="Engineer">Engineer</option>
+                <option value="Team Lead">Team Lead</option>
+                <option value="Admin">Admin</option>
+              </select>
+            </div>
+            <button class="btn primary" type="submit">Add user</button>
+          </div>
+        </form>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Role</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody id="user-rows">
+              <tr>
+                <td>Minh Nguyen</td>
+                <td>Engineer</td>
+                <td><span class="badge ok">Active</span></td>
+              </tr>
+              <tr>
+                <td>Sarah Johnson</td>
+                <td>Team Lead</td>
+                <td><span class="badge ok">Active</span></td>
+              </tr>
+              <tr>
+                <td>Admin User</td>
+                <td>Admin</td>
+                <td><span class="badge ok">Active</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Rules Tab -->
+      <section id="rules-panel" class="card" hidden>
+        <h2>Alert Rules</h2>
+        <p class="muted">Configure incident grouping and escalation rules.</p>
+        <div style="margin-top: 16px;">
+          <ul style="padding-left: 20px;">
+            <li>Rule 1: Group alerts from same device within 2 minutes</li>
+            <li>Rule 2: Escalate critical incidents open for > 45 minutes</li>
+            <li>Rule 3: Auto-close incidents after 24 hours if no new alerts</li>
+            <li>Rule 4: Suppress duplicate alerts from same source</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Audit Tab -->
+      <section id="audit-panel" class="card" hidden>
+        <h2>Audit Log</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">User</th>
+                <th scope="col">Action</th>
+                <th scope="col">Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="mono">10:35:12</td>
+                <td>Minh Nguyen</td>
+                <td>Feedback</td>
+                <td>INC-1042: Marked cause 1 as correct</td>
+              </tr>
+              <tr>
+                <td class="mono">10:32:45</td>
+                <td>Minh Nguyen</td>
+                <td>Escalate</td>
+                <td>INC-1042: Escalated to expert</td>
+              </tr>
+              <tr>
+                <td class="mono">10:15:22</td>
+                <td>Sarah Johnson</td>
+                <td>View</td>
+                <td>INC-1041: Incident detail viewed</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>

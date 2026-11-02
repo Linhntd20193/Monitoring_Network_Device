@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NOC Assistant</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">NOC Assistant <small>GenAI Network Device Monitoring</small></div>
+    <nav aria-label="Main">
+      <ul class="nav">
+        <li><a href="dashboard.html" aria-current="page">Incidents</a></li>
+        <li><a href="incident.html">Incident detail</a></li>
+        <li><a href="report.html">Report</a></li>
+        <li class="nav-label" role="presentation">Team lead</li>
+        <li><a href="results.html">Results</a></li>
+        <li class="nav-label" role="presentation">Admin</li>
+        <li><a href="admin.html">Users, rules, audit</a></li>
+      </ul>
+    </nav>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <div class="who"><span class="badge neutral">Role: Engineer</span><span>Minh Nguyen</span></div>
+      <div>
+        <button class="btn small" id="theme-toggle" type="button">Toggle dark mode</button>
+        <a class="btn small" href="login.html">Sign out</a>
+      </div>
+    </header>
+    <main class="content" id="main">
+      <div>
+        <h1>Welcome to NOC Assistant</h1>
+        <p class="muted">GenAI Network Device Monitoring System</p>
+      </div>
+      <section class="card">
+        <h2>Quick Links</h2>
+        <ul>
+          <li><a href="dashboard.html">View all incidents</a></li>
+          <li><a href="incident.html">View incident details</a></li>
+          <li><a href="report.html">Generate report</a></li>
+        </ul>
+      </section>
+    </main>
+  </div>
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>

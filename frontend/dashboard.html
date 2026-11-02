@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Incident Dashboard — NOC Assistant</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">NOC Assistant <small>GenAI Network Device Monitoring</small></div>
+    <nav aria-label="Main">
+      <ul class="nav">
+        <li><a href="dashboard.html" aria-current="page">Incidents</a></li>
+        <li><a href="incident.html">Incident detail</a></li>
+        <li><a href="report.html">Report</a></li>
+        <li class="nav-label" role="presentation">Team lead</li>
+        <li><a href="results.html">Results</a></li>
+        <li class="nav-label" role="presentation">Admin</li>
+        <li><a href="admin.html">Users, rules, audit</a></li>
+      </ul>
+    </nav>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <div class="who"><span class="badge neutral">Role: Engineer</span><span>Minh Nguyen</span></div>
+      <div>
+        <button class="btn small" id="theme-toggle" type="button">Toggle dark mode</button>
+        <a class="btn small" href="login.html">Sign out</a>
+      </div>
+    </header>
+    <main class="content" id="main">
+      <div>
+        <h1>Open incidents</h1>
+        <p class="muted">UC-02 · Sorted by severity, then age. Related alerts are grouped into one incident (REQ-002).</p>
+      </div>
+
+      <div id="offline-banner" class="banner warn" role="status" hidden>
+        <span><strong>Data source offline.</strong> Last update 09:52. Showing last known incidents.</span>
+      </div>
+
+      <section class="grid-4" aria-label="Summary">
+        <div class="card kpi">
+          <div class="value" id="stat-open">-</div>
+          <div class="label">Open incidents</div>
+        </div>
+        <div class="card kpi">
+          <div class="value" id="stat-alerts">-</div>
+          <div class="label">Alerts grouped today</div>
+        </div>
+        <div class="card kpi">
+          <div class="value" id="stat-critical">-</div>
+          <div class="label">Critical over 45 minutes</div>
+        </div>
+        <div class="card kpi">
+          <div class="value" id="stat-devices">-</div>
+          <div class="label">Devices monitored</div>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="list-h">
+        <h2 id="list-h">Incident list <span class="muted" style="font-weight:400">(showing <span id="shown-count">-</span>)</span></h2>
+        <div class="toolbar">
+          <div>
+            <label for="sev-filter">Severity</label>
+            <select id="sev-filter">
+              <option value="all">All</option>
+              <option value="critical">Critical</option>
+              <option value="major">Major</option>
+              <option value="minor">Minor</option>
+            </select>
+          </div>
+          <div style="flex:1;min-width:200px">
+            <label for="inc-search">Search device or site</label>
+            <input id="inc-search" type="search" placeholder="e.g. core-sw-07 or Site 3">
+          </div>
+          <button class="btn small" id="offline-demo" type="button">Demo: data source offline</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <caption class="sr-only">Open incidents ordered by severity</caption>
+            <thead>
+              <tr><th scope="col">Severity</th><th scope="col">Incident</th><th scope="col">Affected devices</th><th scope="col">Alerts</th><th scope="col">Age</th><th scope="col">Top probable cause</th></tr>
+            </thead>
+            <tbody id="incident-rows">
+              <tr><td colspan="6" style="text-align: center; padding: 32px;">Loading incidents...</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="empty-state" class="empty" hidden>No open incidents match your filters.</div>
+        <p class="muted" style="margin-top:12px;font-size:.85rem">Severity is shown as colour, symbol and text. Suppressed alerts stay retrievable for 30 days (<a href="admin.html">UC-13 in audit &amp; search</a>).</p>
+      </section>
+    </main>
+  </div>
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>

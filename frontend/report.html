@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Report — NOC Assistant</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">NOC Assistant <small>GenAI Network Device Monitoring</small></div>
+    <nav aria-label="Main">
+      <ul class="nav">
+        <li><a href="dashboard.html">Incidents</a></li>
+        <li><a href="incident.html">Incident detail</a></li>
+        <li><a href="report.html" aria-current="page">Report</a></li>
+        <li class="nav-label" role="presentation">Team lead</li>
+        <li><a href="results.html">Results</a></li>
+        <li class="nav-label" role="presentation">Admin</li>
+        <li><a href="admin.html">Users, rules, audit</a></li>
+      </ul>
+    </nav>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <div class="who"><span class="badge neutral">Role: Engineer</span><span>Minh Nguyen</span></div>
+      <div>
+        <button class="btn small" id="theme-toggle" type="button">Toggle dark mode</button>
+        <a class="btn small" href="login.html">Sign out</a>
+      </div>
+    </header>
+    <main class="content" id="main">
+      <div>
+        <h1>Incident Report</h1>
+        <p class="muted">Draft your incident report below. Changes are saved automatically.</p>
+      </div>
+
+      <section class="card">
+        <h2>Report Details</h2>
+        <form id="report-form" novalidate>
+          <div class="field">
+            <label for="rep-title">Incident Title</label>
+            <input id="rep-title" type="text" value="Link failure on core-sw-07">
+          </div>
+          <div class="field">
+            <label for="rep-summary">Summary</label>
+            <textarea id="rep-summary">A critical link failure was detected on core-sw-07 Gi0/1 interface at 09:41. The port went down and 19 downstream alerts were triggered within 2 minutes.</textarea>
+          </div>
+          <div class="field">
+            <label for="rep-cause">Root Cause</label>
+            <textarea id="rep-cause">Link failure on core-sw-07 Gi0/1 port. The interface went down at 09:41:12 according to syslog. Likely a cable or transceiver issue.</textarea>
+          </div>
+          <div class="field">
+            <label for="rep-actions">Actions Taken</label>
+            <textarea id="rep-actions">1. Checked the cable and transceiver on core-sw-07 Gi0/1.
+2. Moved traffic to the standby link.
+3. Replaced the transceiver.
+4. Confirmed recovery at 10:33.</textarea>
+          </div>
+          <div class="field">
+            <label for="rep-impact">Business Impact</label>
+            <textarea id="rep-impact">Approximately 52 minutes of service disruption across Site 3 network. Traffic was successfully rerouted through standby links during the incident.</textarea>
+          </div>
+          <div class="field">
+            <button class="btn primary" type="submit">Save Report</button>
+            <span class="badge ok" id="rep-status" style="margin-left: 8px;"></span>
+          </div>
+        </form>
+      </section>
+    </main>
+  </div>
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Incident Detail — NOC Assistant</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">NOC Assistant <small>GenAI Network Device Monitoring</small></div>
+    <nav aria-label="Main">
+      <ul class="nav">
+        <li><a href="dashboard.html">Incidents</a></li>
+        <li><a href="incident.html" aria-current="page">Incident detail</a></li>
+        <li><a href="report.html">Report</a></li>
+        <li class="nav-label" role="presentation">Team lead</li>
+        <li><a href="results.html">Results</a></li>
+        <li class="nav-label" role="presentation">Admin</li>
+        <li><a href="admin.html">Users, rules, audit</a></li>
+      </ul>
+    </nav>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <div class="who"><span class="badge neutral">Role: Engineer</span><span>Minh Nguyen</span></div>
+      <div>
+        <button class="btn small" id="theme-toggle" type="button">Toggle dark mode</button>
+        <a class="btn small" href="login.html">Sign out</a>
+      </div>
+    </header>
+    <main class="content" id="main">
+      <div>
+        <p><a href="dashboard.html">&larr; Back to incidents</a></p>
+        <h1 id="incident-title">Loading...</h1>
+        <p class="muted" id="incident-meta"></p>
+      </div>
+
+      <div id="escalation-banner" class="banner danger" role="alert" hidden>
+        <span><strong>Critical incident open for over 45 minutes.</strong> Escalate to an expert at 60 minutes (BRU-002).</span>
+        <span>
+          <button class="btn small danger" id="escalate-btn" type="button">Escalate to expert</button>
+          <button class="btn small" id="escalate-later" type="button">Remind me later</button>
+        </span>
+      </div>
+
+      <div class="split">
+        <div style="display:grid;gap:16px">
+          <section class="card" aria-labelledby="causes-h">
+            <h2 id="causes-h">Probable causes <span class="muted" style="font-weight:400">(UC-04)</span></h2>
+            <div id="causes-container"></div>
+          </section>
+
+          <section class="card" aria-labelledby="act-h">
+            <h2 id="act-h">Recommended next action <span class="muted" style="font-weight:400">(UC-06)</span></h2>
+            <ol id="actions-container"></ol>
+          </section>
+
+          <section class="card" aria-labelledby="al-h">
+            <h2 id="al-h">Grouped alerts <span class="muted" style="font-weight:400" id="alert-count">(0)</span></h2>
+            <div class="table-wrap">
+              <table>
+                <caption class="sr-only">Alerts grouped</caption>
+                <thead><tr><th scope="col">Time</th><th scope="col">Device</th><th scope="col">Message</th></tr></thead>
+                <tbody id="alerts-container"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+        <aside style="display:grid;gap:16px">
+          <section class="card chat" aria-labelledby="chat-h">
+            <h2 id="chat-h">Ask about this incident <span class="muted" style="font-weight:400">(UC-08)</span></h2>
+            <div class="chat-log" id="chat-log" role="log" aria-live="polite">
+              <div class="msg bot">Hello, I can answer questions about this incident and cite the evidence.</div>
+            </div>
+            <form id="chat-form" novalidate>
+              <label for="chat-input">Your question</label>
+              <input id="chat-input" type="text" placeholder="Why did this happen?" autocomplete="off">
+              <div class="field"><div class="error" id="chat-error" hidden>Please type a question first.</div></div>
+              <button class="btn primary" type="submit">Send</button>
+            </form>
+          </section>
+
+          <section class="card" aria-labelledby="close-h">
+            <h2 id="close-h">Close incident <span class="muted" style="font-weight:400">(UC-10)</span></h2>
+            <p class="muted">An incident closes only after you confirm that service is restored (BRU-003).</p>
+            <button class="btn primary" id="open-close" type="button">Confirm recovery</button>
+          </section>
+        </aside>
+      </div>
+    </main>
+  </div>
+</div>
+
+<dialog id="close-dialog" aria-labelledby="dlg-h">
+  <h2 id="dlg-h">Confirm service is restored?</h2>
+  <p id="close-dialog-text"></p>
+  <div class="actions">
+    <button class="btn" id="close-cancel" type="button">Cancel, keep open</button>
+    <button class="btn primary" id="close-confirm" type="button">Yes, close incident</button>
+  </div>
+</dialog>
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>
