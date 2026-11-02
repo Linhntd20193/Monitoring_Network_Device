@@ -1,0 +1,55 @@
+﻿🧪 Running filterIncidents tests...
+
+
+============================================================
+TEST RESULTS SUMMARY
+============================================================
+Total Tests: 28
+✓ Passed: 28
+✗ Failed: 0
+Success Rate: 100.0%
+============================================================
+
+✓ PASS: Test 1: Should return all incidents (expected: 5, got: 5)
+✓ PASS: Test 1: First should be critical INC-1042 (expected: INC-1042, got: INC-1042)
+✓ PASS: Test 1 - No filters
+✓ PASS: Test 2: Should return 1 critical incident (expected: 1, got: 1)
+✓ PASS: Test 2: Incident should be critical (expected: critical, got: critical)
+✓ PASS: Test 2 - Filter by critical
+✓ PASS: Test 3: Should return 2 major incidents (expected: 2, got: 2)
+✓ PASS: Test 3: All results should be major severity
+✓ PASS: Test 3: Should be sorted by age (31 before 72) (expected: 31, got: 31)
+✓ PASS: Test 3: Second should be oldest major (expected: 72, got: 72)
+✓ PASS: Test 3 - Filter by major and sort by age
+✓ PASS: Test 4: Should return 2 minor incidents (expected: 2, got: 2)
+✓ PASS: Test 4: All results should be minor severity
+✓ PASS: Test 4 - Filter by minor
+✓ PASS: Test 5: Should find 1 incident with "link" in title (expected: 1, got: 1)
+✓ PASS: Test 5: Should find INC-1042 (expected: INC-1042, got: INC-1042)
+✓ PASS: Test 5 - Search by title
+✓ PASS: Test 6: Should find incident with device core-sw-07 (expected: 1, got: 1)
+✓ PASS: Test 6: Should find INC-1042 (expected: INC-1042, got: INC-1042)
+✓ PASS: Test 6 - Search by device
+✓ PASS: Test 7: Should find 1 incident in Site 1 (expected: 1, got: 1)
+✓ PASS: Test 7: Should find INC-1039 (expected: INC-1039, got: INC-1039)
+✓ PASS: Test 7 - Search by site
+✓ PASS: Test 8: Should find 1 minor incident with "config" (expected: 1, got: 1)
+✓ PASS: Test 8: Should find INC-1044 (expected: INC-1044, got: INC-1044)
+✓ PASS: Test 8 - Filter by severity AND search
+✓ PASS: Test 9: Should find case-insensitive match (expected: 1, got: 1)
+✓ PASS: Test 9: Should find INC-1041 (expected: INC-1041, got: INC-1041)
+✓ PASS: Test 9 - Case-insensitive search
+✓ PASS: Test 10: Should return empty array for no matches (expected: 0, got: 0)
+✓ PASS: Test 10 - No matches
+✓ PASS: Test 11: Should throw error for invalid severity
+✓ PASS: Test 11 - Error handling for invalid severity
+✓ PASS: Test 12: Should throw TypeError for non-array input
+✓ PASS: Test 12 - Error handling for non-array input
+✓ PASS: Test 13: First should be critical (expected: critical, got: critical)
+✓ PASS: Test 13: Second should be major (expected: major, got: major)
+✓ PASS: Test 13: Minor incidents at end (expected: minor, got: minor)
+✓ PASS: Test 13 - Severity ordering
+✓ PASS: Test 14: Should be sorted by age (youngest first)
+✓ PASS: Test 14 - Age sorting within same severity
+✓ PASS: Test 15: Empty search should match no search filter (expected: 5, got: 5)
+✓ PASS: Test 15 - Empty search string
